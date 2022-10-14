@@ -1,15 +1,14 @@
 package gamepoker;
-
-import gamepoker.Card;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ComparisonTest {
 
+    private Card c1 = new Card(new Value("10",10));
+    private Card c2 = new Card(new Value("A",14));
+
     @org.junit.jupiter.api.Test
-    void testEquals(){
-    Card c1 = new Card(new Value("10",10));
-    Card c3 = new Card(new Value("A",14));
-
-    assertEquals(c1.CompareHigherCard(c3),c3);
-    assertEquals(c3.CompareHigherCard(c1),c3);
-
+    void testEquals() {
+        assertEquals(c1.CompareHigherCard(c2), c2);
+        assertEquals(c2.CompareHigherCard(c1), c2);
+    }
 }

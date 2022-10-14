@@ -6,4 +6,13 @@ public class Card {
 
     public short getValue() {
     }
+
+    public double CompareHigherCard(Card c2) {
+    }
+
+    public short getValue(Card c2) {
+    }
+
+    public short getName(Card c2) {
+    }
 }
