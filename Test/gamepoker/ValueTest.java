@@ -1,11 +1,8 @@
 package gamepoker;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-@org.junit.jupiter.api.Test
-
-
-
 public class ValueTest {
     private Value value1 = new Value("8", 8);
     private Value value2 = new Value("3", 3);
@@ -13,6 +10,7 @@ public class ValueTest {
     private Value value4 = new Value("R", 13);
     private Value value5 = new Value("10", 10);
 
+    @Test
     void getValueTest() {
 
         assertEquals(8, value1.getValue());
@@ -21,7 +19,7 @@ public class ValueTest {
         assertEquals(13, value4.getValue());
         assertEquals(10, value5.getValue());
     }
-
+    @Test
     void getNameTest() {
         assertEquals("8", value1.getName());
         assertEquals("3", value2.getName());
