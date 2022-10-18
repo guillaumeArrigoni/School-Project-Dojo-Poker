@@ -4,15 +4,16 @@ package gamepoker;
  * The value of the cards depends on the strength of each card, this is one of the rules of classic poker.
  * There is a hierarchy of cards that determines strength in poker.
  * The best card is the Ace and the worst is the 2, among the 13 of each suit.
+ * @author Karim CHARLEUX & Yacine MERIOUA
  */
 public class Value {
     /** The name of the value */
-    private String name;
+    private final String name;
     /** The position of the value between 2 and 14 to determine the highest to the lowest */
-    private int position;
+    private final int position;
 
     /**
-     * Constructor of Value card
+     * Create a value card with a name and position between 2-14
      * @param name of the value object
      * @param position of the value object
      */
@@ -46,7 +47,7 @@ public class Value {
         if (object == this) {
             return true;
         }
-        // Check if o is an instance of Value or not
+        // Check if object is an instance of Value or not
         if (!(object instanceof Value)) {
             return false;
         }
@@ -58,8 +59,8 @@ public class Value {
     }
 
     /**
-     * Give a value object in a string object
-     * @return the card value
+     * Convert a value object in a string object to correct display
+     * @return the value converted to a string
      */
     @Override
     public String toString() {
