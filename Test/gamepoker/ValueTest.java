@@ -3,6 +3,8 @@ package gamepoker;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class ValueTest {
     private Value value1 = new Value("8", 8);
     private Value value2 = new Value("3", 3);
@@ -13,11 +15,11 @@ public class ValueTest {
     @Test
     void getValueTest() {
 
-        assertEquals(8, value1.getValue());
-        assertEquals(3, value2.getValue());
-        assertEquals(14, value3.getValue());
-        assertEquals(13, value4.getValue());
-        assertEquals(10, value5.getValue());
+        assertEquals(8, value1.getPosition());
+        assertEquals(3, value2.getPosition());
+        assertEquals(14, value3.getPosition());
+        assertEquals(13, value4.getPosition());
+        assertEquals(10, value5.getPosition());
     }
     @Test
     void getNameTest() {
@@ -27,4 +29,22 @@ public class ValueTest {
         assertEquals("R", value4.getName());
         assertEquals("10", value5.getName());
     }
+
+    @Test
+    void tostringTest() {
+        assertEquals("8", value1.toString());
+        assertEquals("3", value2.toString());
+        assertEquals("A", value3.toString());
+        assertEquals("R", value4.toString());
+        assertEquals("10", value5.toString());
+    }
+
+    /*@Test
+    void equalsTest() {
+        assertTrue(equals(value1));
+        assertTrue(equals(value2));
+        assertTrue(equals(value3));
+        assertTrue(equals(value4));
+        assertTrue(equals(value5));
+    }*/
 }
