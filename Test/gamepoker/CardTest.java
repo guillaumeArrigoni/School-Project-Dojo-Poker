@@ -1,34 +1,30 @@
 package gamepoker;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class CardTest {
+class CardTest {
+    private Card c1 = new Card(new Value("10"));
+    private Card c2 = new Card(new Value("10"));
+    private Card c3 = new Card(new Value("A"));
 
-    private Card c1 = new Card(new Value("10",10));
-    private Card c2 = new Card(new Value("10",10));
-    private Card c3 = new Card(new Value("A",14));
-
-
-    @org.junit.jupiter.api.Test
+    @Test
     void testGetValue(){
-        assertEquals(c1.getValue(), 10);
+        assertEquals(new Value("10"),c1.getValue());
+        assertEquals(new Value("10"),c2.getValue());
+        assertEquals(new Value("A"),c3.getValue());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testEquals(){
-        assertEquals(c1.equals(c2),true);
-        assertEquals(c1.equals(c3),false);
+        assertEquals(c1,c2);
+        assertNotEquals(c1,c3);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testToString(){
-        assertEquals(c1.toString(),"10");
+        assertEquals("10",c1.toString());
     }
-
-
-
-
-
-
 
 }

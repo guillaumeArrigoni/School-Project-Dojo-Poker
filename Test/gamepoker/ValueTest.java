@@ -1,15 +1,15 @@
 package gamepoker;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-public class ValueTest {
-    private Value value1 = new Value("8", 8);
-    private Value value2 = new Value("3", 3);
-    private Value value3 = new Value("A", 14);
-    private Value value4 = new Value("R", 13);
-    private Value value5 = new Value("10", 10);
+class ValueTest {
+    private Value value1 = new Value("8");
+    private Value value2 = new Value("3");
+    private Value value3 = new Value("A");
+    private Value value4 = new Value("R");
+    private Value value5 = new Value("10");
 
     @Test
     void getValueTest() {
@@ -39,12 +39,12 @@ public class ValueTest {
 
     @Test
     void equalsTest() {
-        assertNotEquals(value1,"8");
+        assertNotEquals("8",value1);
         assertNotEquals(value1,value2);
-        assertNotEquals(value1,new Value("9", 8));
-        assertNotEquals(value1,new Value("8", 9));
+        assertNotEquals(new Value("9"),value1);
 
         assertEquals(value1,value1);
-        assertEquals(value1,new Value("8", 8));
+        assertEquals(new Value("8"),value1);
     }
+
 }

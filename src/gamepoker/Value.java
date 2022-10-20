@@ -1,5 +1,8 @@
 package gamepoker;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * The value of the cards depends on the strength of each card, this is one of the rules of classic poker.
  * There is a hierarchy of cards that determines strength in poker.
@@ -15,11 +18,10 @@ public class Value {
     /**
      * Create a value card with a name and position between 2-14
      * @param name of the value object
-     * @param position of the value object
      */
-    public Value(String name, int position) {
+    public Value(String name) {
         this.name = name;
-        this.position = position;
+        this.position = getPositionWithTheName(name);
     }
 
     /**
@@ -66,4 +68,28 @@ public class Value {
     public String toString() {
         return this.name;
     }
+
+    /**
+     * Give the position of a value card between 2-14
+     * @param name of value card
+     * @return the position of the value in the different values
+     */
+    private int getPositionWithTheName(String name) {
+        Map<String, Integer> differentValues  = new HashMap<>();
+        differentValues.put("2",2);
+        differentValues.put("3",3);
+        differentValues.put("4",4);
+        differentValues.put("5",5);
+        differentValues.put("6",6);
+        differentValues.put("7",7);
+        differentValues.put("8",8);
+        differentValues.put("9",9);
+        differentValues.put("10",10);
+        differentValues.put("V",11);
+        differentValues.put("D",12);
+        differentValues.put("R",13);
+        differentValues.put("A",14);
+        return differentValues.get(name);
+    }
+
 }
