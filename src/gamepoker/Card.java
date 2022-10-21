@@ -3,6 +3,7 @@ package gamepoker;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * The poker game contains 52 cards without joker, a card is composed by a value and a color
@@ -34,20 +35,12 @@ public class Card {
      * The first is a boolean with True, if the cards are equals and False otherwise
      * The second is the higher card
      */
-    public ArrayList<Object> CompareHigherCard(Card card2) {
-        ArrayList<Object> comparaisonResult = new ArrayList<Object>();
+    public Boolean CompareHigherCard(Card card2) {
         if (this.value.getPosition() == card2.getValue().getPosition()) {
-            comparaisonResult.add(true);
-            comparaisonResult.add(this);
-
-        } else if (this.value.getPosition() > card2.getValue().getPosition()) {
-            comparaisonResult.add(false);
-            comparaisonResult.add(this);
-        } else if (this.value.getPosition() < card2.getValue().getPosition()){
-            comparaisonResult.add(false);
-            comparaisonResult.add(card2);
+            return null;
+        } else {
+            return (this.value.getPosition() > card2.getValue().getPosition());
         }
-        return comparaisonResult;
     }
 
     /**
