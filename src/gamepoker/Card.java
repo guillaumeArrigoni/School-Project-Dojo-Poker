@@ -1,10 +1,5 @@
 package gamepoker;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 /**
  * The poker game contains 52 cards without joker, a card is composed by a value and a color
  * @author Karim CHARLEUX & Yacine MERIOUA
@@ -31,9 +26,10 @@ public class Card {
     /**
      * Allows to compare with another card on the current card the higher value
      * @param card2 The second card
-     * @return an ArrayList with 2 parameters :
-     * The first is a boolean with True, if the cards are equals and False otherwise
-     * The second is the higher card
+     * @return :
+     * null if the 2 cards are equals
+     * true if the first cards is bigger than the second
+     * false otherwise
      */
     public Boolean CompareHigherCard(Card card2) {
         if (this.value.getPosition() == card2.getValue().getPosition()) {
