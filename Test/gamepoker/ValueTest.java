@@ -1,16 +1,26 @@
 package gamepoker;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ValueTest {
-    private Value value1 = new Value("8");
-    private Value value2 = new Value("3");
-    private Value value3 = new Value("A");
-    private Value value4 = new Value("R");
-    private Value value5 = new Value("10");
+    private static Value value1;
+    private static Value value2;
+    private static Value value3;
+    private static Value value4;
+    private static Value value5;
 
+    @BeforeAll
+    public static void setup() {
+        value1= new Value("8");
+        value2 = new Value("3");
+        value3 = new Value("A");
+        value4 = new Value("R");
+        value5 = new Value("10");
+
+    }
     @Test
     void getValueTest() {
         assertEquals(8, value1.getPosition());
