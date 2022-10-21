@@ -1,13 +1,21 @@
 package gamepoker;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class CardTest {
-    private Card c1 = new Card(new Value("10"));
-    private Card c2 = new Card(new Value("10"));
-    private Card c3 = new Card(new Value("A"));
+    private static Card c1 ;
+    private static Card c2 ;
+    private static Card c3 ;
+
+    @BeforeAll
+    public static void setup() {
+        c1 = new Card(new Value("10"));
+        c2 = new Card(new Value("10"));
+        c3 = new Card(new Value("A"));
+    }
 
     @Test
     void testGetValue(){

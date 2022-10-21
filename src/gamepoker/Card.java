@@ -32,7 +32,7 @@ public class Card {
      * false otherwise
      */
     public Boolean CompareHigherCard(Card card2) {
-        if (this.value.getPosition() == card2.getValue().getPosition()) {
+        if (this.value.equals(card2.getValue())) {
             return null;
         } else {
             return (this.value.getPosition() > card2.getValue().getPosition());
