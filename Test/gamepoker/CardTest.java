@@ -25,6 +25,8 @@ class CardTest {
     @Test
     void testToString(){
         assertEquals("10",c1.toString());
+        assertEquals("10", c2.toString());
+        assertEquals("A", c3.toString());
     }
 
 }
