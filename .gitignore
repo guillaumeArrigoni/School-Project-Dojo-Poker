@@ -37,6 +37,7 @@ hs_err_pid*
 .idea
 **/.idea
 **/*.exe
+out
 
 **/.classpath
 **/.project
