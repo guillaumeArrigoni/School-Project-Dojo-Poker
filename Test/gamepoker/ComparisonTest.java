@@ -1,6 +1,7 @@
 package gamepoker;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ComparisonTest {
@@ -15,6 +16,7 @@ class ComparisonTest {
         c3 = new Card(new Value("A"));
     }
 
+    @Test
     void testEquals() {
         assertNull(c2.CompareHigherCard(c3));
         assertTrue(c2.CompareHigherCard(c1));
