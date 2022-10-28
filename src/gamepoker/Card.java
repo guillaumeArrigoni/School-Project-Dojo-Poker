@@ -12,8 +12,8 @@ public class Card {
      * Create Card with a specified value
      * @param value The value's card
      */
-    public Card(Value value) {
-        this.value = value;
+    public Card(String value) {
+        this.value = new Value(value);
     }
 
     /**

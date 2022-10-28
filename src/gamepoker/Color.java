@@ -22,11 +22,11 @@ public class Color {
         if (object == this) {
             return true;
         }
-        // Check if object is an instance of Value or not
+        // Check if object is an instance of Color or not
         if (!(object instanceof Color)) {
             return false;
         }
-        // Typecast object to Value so that we can compare both data
+        // Typecast object to Color so that we can compare both data
         Color color2 = (Color) object;
 
         // Compare the data members and return accordingly

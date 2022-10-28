@@ -85,7 +85,7 @@ public class Comparison {
                     return chooseWinningPair(hand1,hand2);
                 }
             } else {
-                return chooseWinningBrelan(hand1,hand2);
+                return chooseWinningSingle(hand1,hand2);
             }
         } else {
             return chooseWinningCombination(hand1,hand2);
