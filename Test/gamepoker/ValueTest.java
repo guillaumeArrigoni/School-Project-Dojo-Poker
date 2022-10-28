@@ -6,60 +6,60 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ValueTest {
-    private static Value value1;
-    private static Value value2;
-    private static Value value3;
-    private static Value value4;
-    private static Value value5;
+    private static Value valueEight;
+    private static Value valueThree;
+    private static Value valueAs;
+    private static Value valueKing;
+    private static Value valueTen;
 
     @BeforeAll
-    public static void setup() {
-        value1= new Value("8");
-        value2 = new Value("3");
-        value3 = new Value("A");
-        value4 = new Value("R");
-        value5 = new Value("10");
+    public static void setupValue() {
+        valueEight= new Value("8");
+        valueThree = new Value("3");
+        valueAs = new Value("A");
+        valueKing = new Value("R");
+        valueTen = new Value("10");
     }
 
     @Test
     void getValueTest() {
-        assertEquals(8, value1.getPosition());
-        assertEquals(3, value2.getPosition());
-        assertEquals(14, value3.getPosition());
-        assertEquals(13, value4.getPosition());
-        assertEquals(10, value5.getPosition());
+        assertEquals(8, valueEight.getPosition());
+        assertEquals(3, valueThree.getPosition());
+        assertEquals(14, valueAs.getPosition());
+        assertEquals(13, valueKing.getPosition());
+        assertEquals(10, valueTen.getPosition());
     }
 
     @Test
     void getNameTest() {
-        assertEquals("8", value1.getName());
-        assertEquals("3", value2.getName());
-        assertEquals("A", value3.getName());
-        assertEquals("R", value4.getName());
-        assertEquals("10", value5.getName());
+        assertEquals("8", valueEight.getName());
+        assertEquals("3", valueThree.getName());
+        assertEquals("A", valueAs.getName());
+        assertEquals("R", valueKing.getName());
+        assertEquals("10", valueTen.getName());
     }
 
     @Test
     void tostringTest() {
-        assertEquals("8", value1.toString());
-        assertEquals("3", value2.toString());
-        assertEquals("A", value3.toString());
-        assertEquals("R", value4.toString());
-        assertEquals("10", value5.toString());
+        assertEquals("8", valueEight.toString());
+        assertEquals("3", valueThree.toString());
+        assertEquals("A", valueAs.toString());
+        assertEquals("R", valueKing.toString());
+        assertEquals("10", valueTen.toString());
     }
 
     @Test
     void equalsTest() {
-        assertEquals(Value.HUIT,value1);
-        assertEquals(Value.TROIS,value2);
-        assertEquals(Value.AS,value3);
-        assertEquals(Value.ROI,value4);
-        assertEquals(Value.DIX,value5);
-        assertNotEquals("8",value1);
-        assertEquals(new Value("8"),value1);
-        assertNotEquals(value1,value2);
-        assertNotEquals(new Value("9"),value1);
-        assertEquals(value1,value1);
+        assertEquals(Value.HUIT,valueEight);
+        assertEquals(Value.TROIS,valueThree);
+        assertEquals(Value.AS,valueAs);
+        assertEquals(Value.ROI,valueKing);
+        assertEquals(Value.DIX,valueTen);
+        assertNotEquals("8",valueEight);
+        assertEquals(new Value("8"),valueEight);
+        assertNotEquals(valueEight,valueThree);
+        assertNotEquals(new Value("9"),valueEight);
+        assertEquals(valueEight,valueEight);
     }
 
 }

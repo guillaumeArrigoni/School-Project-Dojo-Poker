@@ -6,35 +6,31 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class CardTest {
-    private static Card c1 ;
-    private static Card c2 ;
-    private static Card c3 ;
+    private static Card cardTen ;
+    private static Card cardAs ;
 
     @BeforeAll
-    public static void setup() {
-        c1 = new Card(new Value("10"));
-        c2 = new Card(new Value("10"));
-        c3 = new Card(new Value("A"));
+    public static void setupCard() {
+        cardTen = new Card(new Value("10"));
+        cardAs = new Card(new Value("A"));
     }
 
     @Test
-    void testGetValue(){
-        assertEquals(new Value("10"),c1.getValue());
-        assertEquals(new Value("10"),c2.getValue());
-        assertEquals(new Value("A"),c3.getValue());
+    void getValueTest(){
+        assertEquals(new Value("10"),cardTen.getValue());
+        assertEquals(new Value("A"),cardAs.getValue());
     }
 
     @Test
-    void testEquals(){
-        assertEquals(c1,c2);
-        assertNotEquals(c1,c3);
+    void equalsTest(){
+        assertEquals(cardTen,cardTen);
+        assertNotEquals(cardTen,cardAs);
     }
 
     @Test
-    void testToString(){
-        assertEquals("10",c1.toString());
-        assertEquals("10", c2.toString());
-        assertEquals("A", c3.toString());
+    void toStringTest(){
+        assertEquals("10",cardTen.toString());
+        assertEquals("A", cardAs.toString());
     }
 
 }
