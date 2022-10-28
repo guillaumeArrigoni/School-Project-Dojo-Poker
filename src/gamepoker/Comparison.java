@@ -52,9 +52,9 @@ public class Comparison {
 
     private void initDictionary(){
         correspondanceCombinaisonEntierString.put(1, "the highest card : ");
-        correspondanceCombinaisonEntierString.put(2, "pair");
-        correspondanceCombinaisonEntierString.put(3, "double pair");
-        correspondanceCombinaisonEntierString.put(4, "three of a kind");
+        correspondanceCombinaisonEntierString.put(2, "a pair");
+        correspondanceCombinaisonEntierString.put(3, "a double pair");
+        correspondanceCombinaisonEntierString.put(4, "a three of a kind");
     }
     public Boolean getWinning() {
         return this.firstWinningOnSecond;
