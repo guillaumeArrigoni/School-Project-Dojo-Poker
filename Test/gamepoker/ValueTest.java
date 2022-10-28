@@ -19,8 +19,8 @@ class ValueTest {
         value3 = new Value("A");
         value4 = new Value("R");
         value5 = new Value("10");
-
     }
+
     @Test
     void getValueTest() {
         assertEquals(8, value1.getPosition());
@@ -29,6 +29,7 @@ class ValueTest {
         assertEquals(13, value4.getPosition());
         assertEquals(10, value5.getPosition());
     }
+
     @Test
     void getNameTest() {
         assertEquals("8", value1.getName());
@@ -49,12 +50,16 @@ class ValueTest {
 
     @Test
     void equalsTest() {
+        assertEquals(Value.HUIT,value1);
+        assertEquals(Value.TROIS,value2);
+        assertEquals(Value.AS,value3);
+        assertEquals(Value.ROI,value4);
+        assertEquals(Value.DIX,value5);
         assertNotEquals("8",value1);
+        assertEquals(new Value("8"),value1);
         assertNotEquals(value1,value2);
         assertNotEquals(new Value("9"),value1);
-
         assertEquals(value1,value1);
-        assertEquals(new Value("8"),value1);
     }
 
 }
