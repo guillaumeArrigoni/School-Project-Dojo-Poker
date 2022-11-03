@@ -13,9 +13,6 @@ import java.util.Objects;
  * @author Karim CHARLEUX & Yacine MERIOUA
  */
 public class Value {
-    /**
-     * The name of the value
-     */
 
     public static final Value DEUX = new Value("2");
     public static final Value TROIS = new Value("3");
@@ -31,16 +28,30 @@ public class Value {
     public static final Value ROI = new Value("R");
     public static final Value AS = new Value("A");
 
+    /**
+     * The name of the value
+     */
     private final String name;
 
     /**
-     * Create a value card with a name and position between 2-14
+     * Create a value card with a name
      *
      * @param name of the value object
      */
     public Value(String name) {
         this.name = name;
         //TODO: Create an exception if name is not correct
+    }
+
+    /**
+     * Create a value card with a position between 2-14
+     *
+     * @param position a int between 2-14
+     */
+    public Value(int position) {
+        //Get name corresponding to the position in AllValues array
+        this.name = getAllValues().get(position).getName();
+        //TODO: Create an exception if position is not correct (2-14)
     }
 
     /**
@@ -57,9 +68,9 @@ public class Value {
      */
     public int getPosition() {
         List<Value> allValues = getAllValues();
-        for (int position = 0; position < allValues.size(); position++) {
+        for (int position = 2; position <= allValues.size(); position++) {
             if (allValues.get(position).getName().equals(this.name))
-                return position + 2;
+                return position;
         }
         return -1; //TODO: Create an exception here
     }
@@ -102,8 +113,8 @@ public class Value {
      *
      * @return an ArrayList of all values
      */
-    public List<Value> getAllValues() {
-        return new ArrayList<>(Arrays.asList(DEUX, TROIS, QUATRE, CINQ, SIX, SEPT, HUIT, NEUF, DIX, VALET, DAME, ROI, AS));
+    public static List<Value> getAllValues() {
+        return new ArrayList<>(Arrays.asList(null, null, DEUX, TROIS, QUATRE, CINQ, SIX, SEPT, HUIT, NEUF, DIX, VALET, DAME, ROI, AS));
     }
 
     /**

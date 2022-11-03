@@ -1,65 +1,62 @@
 package gamepoker;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ValueTest {
-    private static Value valueEight;
-    private static Value valueThree;
-    private static Value valueAs;
-    private static Value valueKing;
-    private static Value valueTen;
 
-    @BeforeAll
-    public static void setupValue() {
-        valueEight= new Value("8");
-        valueThree = new Value("3");
-        valueAs = new Value("A");
-        valueKing = new Value("R");
-        valueTen = new Value("10");
+    private static Stream<Arguments> provideValueStringConstructor() {
+        return Stream.of(
+                Arguments.of(new Value("8"), "8", 8, Value.HUIT),
+                Arguments.of(new Value("3"), "3", 3, Value.TROIS),
+                Arguments.of(new Value("A"), "A", 14, Value.AS),
+                Arguments.of(new Value("R"), "R", 13, Value.ROI),
+                Arguments.of(new Value("2"), "2", 2, Value.DEUX)
+        );
     }
 
-    @Test
-    void getValueTest() {
-        assertEquals(8, valueEight.getPosition());
-        assertEquals(3, valueThree.getPosition());
-        assertEquals(14, valueAs.getPosition());
-        assertEquals(13, valueKing.getPosition());
-        assertEquals(10, valueTen.getPosition());
+    private static Stream<Arguments> provideValueIntConstructor() {
+        return Stream.of(
+                Arguments.of(new Value(8), "8", 8, Value.HUIT),
+                Arguments.of(new Value(3), "3", 3, Value.TROIS),
+                Arguments.of(new Value(14), "A", 14, Value.AS),
+                Arguments.of(new Value(13), "R", 13, Value.ROI),
+                Arguments.of(new Value(2), "2", 2, Value.DEUX)
+        );
     }
 
-    @Test
-    void getNameTest() {
-        assertEquals("8", valueEight.getName());
-        assertEquals("3", valueThree.getName());
-        assertEquals("A", valueAs.getName());
-        assertEquals("R", valueKing.getName());
-        assertEquals("10", valueTen.getName());
+
+    @ParameterizedTest
+    @MethodSource({"provideValueStringConstructor", "provideValueIntConstructor"})
+    void getPositionMethodTestParameterized(Value theValue, String theName, int thePosition) {
+        assertEquals(thePosition, theValue.getPosition());
     }
 
-    @Test
-    void tostringTest() {
-        assertEquals("8", valueEight.toString());
-        assertEquals("3", valueThree.toString());
-        assertEquals("A", valueAs.toString());
-        assertEquals("R", valueKing.toString());
-        assertEquals("10", valueTen.toString());
+    @ParameterizedTest
+    @MethodSource({"provideValueStringConstructor", "provideValueIntConstructor"})
+    void getNameMethodTestParameterized(Value theValue, String theName) {
+        assertEquals(theName, theValue.getName());
     }
 
-    @Test
-    void equalsTest() {
-        assertEquals(Value.HUIT,valueEight);
-        assertEquals(Value.TROIS,valueThree);
-        assertEquals(Value.AS,valueAs);
-        assertEquals(Value.ROI,valueKing);
-        assertEquals(Value.DIX,valueTen);
-        assertNotEquals("8",valueEight);
-        assertEquals(new Value("8"),valueEight);
-        assertNotEquals(valueEight,valueThree);
-        assertNotEquals(new Value("9"),valueEight);
-        assertEquals(valueEight,valueEight);
+    @ParameterizedTest
+    @MethodSource({"provideValueStringConstructor", "provideValueIntConstructor"})
+    void toStringMethodTestParameterized(Value theValue, String theName) {
+        assertEquals(theName, theValue.toString());
     }
 
+    @ParameterizedTest
+    @MethodSource({"provideValueStringConstructor", "provideValueIntConstructor"})
+    void equalsMethodTestParameterized(Value theValue, String theName, int thePosition, Value correspondingValue) {
+        assertEquals(correspondingValue, theValue);
+        assertEquals(theValue, theValue);
+        assertNotEquals(thePosition, theValue);
+        assertNotEquals(theName, theValue);
+        assertNotEquals(Value.DAME, theValue);
+    }
 }
