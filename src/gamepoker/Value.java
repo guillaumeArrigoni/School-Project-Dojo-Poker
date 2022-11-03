@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author Karim CHARLEUX & Yacine MERIOUA
  */
-public class Value {
+public class Value implements Comparable<Value> {
 
     public static final Value DEUX = new Value("2");
     public static final Value TROIS = new Value("3");
@@ -123,5 +123,22 @@ public class Value {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    /**
+     * Compare two Value object based on position
+     *
+     * @param value the object to be compared.
+     * @return -1 = Current < second | 0 = Equal | 1 = Current > second
+     */
+    @Override
+    public int compareTo(Value value) {
+        if (this.getPosition() == value.getPosition()) {
+            return 0;
+        } else if (this.getPosition() > value.getPosition()) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 }

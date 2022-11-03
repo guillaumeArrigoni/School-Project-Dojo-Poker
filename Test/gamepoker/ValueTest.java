@@ -1,5 +1,6 @@
 package gamepoker;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -58,5 +59,12 @@ class ValueTest {
         assertNotEquals(thePosition, theValue);
         assertNotEquals(theName, theValue);
         assertNotEquals(Value.DAME, theValue);
+    }
+
+    @Test
+    void compareToMethodTest() {
+        assertEquals(1, Value.AS.compareTo(Value.DEUX));
+        assertEquals(0, Value.DEUX.compareTo(Value.DEUX));
+        assertEquals(-1, Value.DEUX.compareTo(Value.AS));
     }
 }
