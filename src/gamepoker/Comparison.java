@@ -74,9 +74,14 @@ public class Comparison {
 
     private void initDictionary(){
         correspondanceCombinaisonEntierString.put(1, "the highest card : ");
-        correspondanceCombinaisonEntierString.put(2, "a PAIR_FOR_DICO_KEY");
-        correspondanceCombinaisonEntierString.put(3, "a double PAIR_FOR_DICO_KEY");
+        correspondanceCombinaisonEntierString.put(2, "a pair");
+        correspondanceCombinaisonEntierString.put(3, "a double pair");
         correspondanceCombinaisonEntierString.put(4, "a three of a kind");
+        correspondanceCombinaisonEntierString.put(5, "a straight");
+        correspondanceCombinaisonEntierString.put(6, "a flush");
+        correspondanceCombinaisonEntierString.put(7, "a full");
+        correspondanceCombinaisonEntierString.put(8, "a four of a kind");
+        correspondanceCombinaisonEntierString.put(9, "a quinte flush");
     }
     public Boolean getWinning() {
         return this.firstWinningOnSecond;
@@ -93,28 +98,22 @@ public class Comparison {
     private boolean haveSingle(HandPoker hand) {
         return hand.getHandOccurrence().containsValue(SINGLE_FOR_DICO_KEY);
     }
-
-    private boolean havePair(HandPoker hand) {
-        return hand.getHandOccurrence().containsValue(PAIR_FOR_DICO_KEY);
-    }
-
+    private boolean havePair(HandPoker hand) { return hand.getHandOccurrence().containsValue(PAIR_FOR_DICO_KEY); }
     private boolean haveBrelan(HandPoker hand) {
         return hand.getHandOccurrence().containsValue(BRELAN_FOR_DICO_KEY);
+    }
+    private boolean haveCarre(HandPoker hand) {
+        return hand.getHandOccurrence().containsValue(CARRE_FOR_DICO_KEY);
     }
 
     private ArrayList<Integer> getSingle(HandPoker hand) {
         return hand.getHandCombination().get(SINGLE_FOR_DICO_KEY);
     }
-
     private ArrayList<Integer> getPair(HandPoker hand) {
         return hand.getHandCombination().get(PAIR_FOR_DICO_KEY);
     }
-
-    private Integer getBrelan(HandPoker hand) {
-        return hand.getHandCombination().get(BRELAN_FOR_DICO_KEY).get(0); /* only one brelan can be reach in any hand -> list of 1 element*/
-    }
-    private int getCarre(HandPoker hand1) {return hand1.getHandCombination().get(CARRE_FOR_DICO_KEY).get(0);
-    }
+    private Integer getBrelan(HandPoker hand) {return hand.getHandCombination().get(BRELAN_FOR_DICO_KEY).get(0); /* only one brelan can be reach in any hand -> list of 1 element*/}
+    private Integer getCarre(HandPoker hand) {return hand.getHandCombination().get(CARRE_FOR_DICO_KEY).get(0);}
 
 
 
@@ -135,8 +134,7 @@ public class Comparison {
     private int chooseCombination(HandPoker hand) {
         if (haveCarre(hand)){
             return CARRE_FOR_COMBINATION;
-        }
-        else if (haveBrelan(hand)) {
+        } else if (haveBrelan(hand)) {
             return BRELAN_FOR_COMBINATION;
         } else if (havePair(hand)) {
             return PAIR_FOR_COMBINATION;
@@ -144,11 +142,6 @@ public class Comparison {
             return SINGLE_FOR_COMBINATION;
         }
     }
-
-    private boolean haveCarre(HandPoker hand) {
-        return hand.getHandOccurrence().containsValue(CARRE_FOR_DICO_KEY);
-    }
-
 
     /**
      * @return (true, false or null) if the first hand is (better, worst or equals) to the second hand
@@ -192,11 +185,15 @@ public class Comparison {
      */
     private ArrayList<Integer> correspondenceValueComposition(int number, HandPoker hand) {
         ArrayList<Integer> listValue = new ArrayList<>();
-        if (number == BRELAN_FOR_COMBINATION) {
-            listValue.add(getBrelan(hand)); /* car getBrelan ne renvoie pas une liste */
-            return listValue;
-        } else {
-            return getPair(hand);
+        switch (number){
+            case CARRE_FOR_COMBINATION :
+                listValue.add(getCarre(hand)); /* car getCarre ne renvoie pas une liste */
+                return listValue;
+            case BRELAN_FOR_COMBINATION:
+                listValue.add(getBrelan(hand)); /* car getBrelan ne renvoie pas une liste */
+                return listValue;
+            default :
+                return getPair(hand);
         }
     }
 
