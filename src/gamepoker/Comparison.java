@@ -38,13 +38,13 @@ public class Comparison {
     public static final int SINGLE_FOR_DICO_KEY = 1;
     public static final int PAIR_FOR_DICO_KEY = 2;
     public static final int BRELAN_FOR_DICO_KEY = 3;
-
+    private static final int CARRE_FOR_DICO_KEY = 4 ;
     public static final int SINGLE_FOR_COMBINATION = 1;
     public static final int PAIR_FOR_COMBINATION = 2;
     public static final int TWO_PAIR_FOR_COMBINAISON = 3;
     public static final int BRELAN_FOR_COMBINATION = 4;
     public static final int COLOR = 6;
-
+    private static final int CARRE_FOR_COMBINATION=8;
 
 
     private final HashMap<Integer, String> correspondanceCombinaisonEntierString = new HashMap<>();
@@ -113,6 +113,10 @@ public class Comparison {
     private Integer getBrelan(HandPoker hand) {
         return hand.getHandCombination().get(BRELAN_FOR_DICO_KEY).get(0); /* only one brelan can be reach in any hand -> list of 1 element*/
     }
+    private int getCarre(HandPoker hand1) {return hand1.getHandCombination().get(CARRE_FOR_DICO_KEY).get(0);
+    }
+
+
 
     /**
      * return the number to the higher combination
@@ -129,7 +133,10 @@ public class Comparison {
      * @return the number of the higher combination
      */
     private int chooseCombination(HandPoker hand) {
-        if (haveBrelan(hand)) {
+        if (haveCarre(hand)){
+            return CARRE_FOR_COMBINATION;
+        }
+        else if (haveBrelan(hand)) {
             return BRELAN_FOR_COMBINATION;
         } else if (havePair(hand)) {
             return PAIR_FOR_COMBINATION;
@@ -138,18 +145,32 @@ public class Comparison {
         }
     }
 
+    private boolean haveCarre(HandPoker hand) {
+        return hand.getHandOccurrence().containsValue(CARRE_FOR_DICO_KEY);
+    }
+
+
     /**
      * @return (true, false or null) if the first hand is (better, worst or equals) to the second hand
      */
     private Boolean chooseWinningHand() {
         if (chooseCombination(this.hand1) == chooseCombination(this.hand2)) {
             switch (chooseCombination(this.hand1)){
+                case CARRE_FOR_COMBINATION:
+                    if (chooseWinningCarre()==null){
+                        return chooseWinningSingle();
+                    }
+                    else {
+                        return chooseWinningCarre();
+                    }
+
                 case BRELAN_FOR_COMBINATION :
                     if (chooseWinningBrelan() == null) {
                         return chooseWinningSingle(); /*car si la deuxième plus haute combinaison est une pair alors il s'agit d'un full et non un brelan*/
                     } else {
                         return chooseWinningBrelan();
                     }
+
                 case PAIR_FOR_COMBINATION: case TWO_PAIR_FOR_COMBINAISON:
                     if (chooseWinningPair() == null) {
                         return chooseWinningSingle();
@@ -212,7 +233,7 @@ public class Comparison {
             return true;
         } else if (getBrelan(this.hand1) < getBrelan(this.hand2)) {
             this.winningValue = new ArrayList<>(Collections.singletonList(getBrelan(this.hand2)));
-            this.winningCombination = BRELAN_FOR_DICO_KEY;
+            this.winningCombination =  BRELAN_FOR_COMBINATION;
             return false;
         } else {
             return null;
@@ -276,6 +297,24 @@ public class Comparison {
         this.winningCombination = EQUALITY;
         return null;
     }
+
+    private Boolean chooseWinningCarre() {
+        if (getCarre(this.hand1) > getCarre(this.hand2)) {
+            this.winningValue = new ArrayList<>(Collections.singletonList(getCarre(this.hand1)));
+            this.winningCombination = CARRE_FOR_COMBINATION;
+            return true;
+        } else if (getCarre(this.hand1) < getCarre(this.hand2)) {
+            this.winningValue = new ArrayList<>(Collections.singletonList(getCarre(this.hand2)));
+            this.winningCombination = CARRE_FOR_COMBINATION;
+            return false;
+        } else {
+            return null;
+        }
+    }
+
+
+
+
 }
 
 

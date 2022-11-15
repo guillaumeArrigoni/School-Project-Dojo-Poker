@@ -13,8 +13,9 @@ public class GamePoker {
          Card Player1card1 = new Card(cardString1[0]);
          Card Player1card2 = new Card(cardString1[1]);
          Card Player1card3 = new Card(cardString1[2]);
+         Card Player1card4 = new Card(cardString1[3]);
 
-         HandPoker hand1 = new HandPoker(Player1card1, Player1card2, Player1card3);
+         HandPoker hand1 = new HandPoker(Player1card1, Player1card2, Player1card3,Player1card4);
 
         System.out.print( "The card of player 2 : " );
         String cardsPlayer2 = scanner.nextLine();
@@ -24,8 +25,9 @@ public class GamePoker {
         Card Player2card1 = new Card(cardString2[0]);
         Card Player2card2 = new Card(cardString2[1]);
         Card Player2card3 = new Card(cardString2[2]);
+        Card Player2card4 = new Card(cardString2[3]);
 
-        HandPoker hand2 = new HandPoker(Player2card1, Player2card2, Player2card3);
+        HandPoker hand2 = new HandPoker(Player2card1, Player2card2, Player2card3,Player2card4);
 
         Comparison c = new Comparison(hand1, hand2);
         int winningCombination = c.getWinningCombination();
@@ -35,9 +37,9 @@ public class GamePoker {
             System.out.println("Both player have same hand ! No one win");
         } else {
             if (c.getWinning()) {
-                System.out.println("Player 1 win with "+ winningCombination +" " + winValue);
+                System.out.println("Player 1 win with "+ c.toString());
             } else {
-                System.out.println("Player 2 win with "+ winningCombination +" " + winValue);
+                System.out.println("Player 2 win with "+ c.toString());
             }
         }
     }

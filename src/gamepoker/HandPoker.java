@@ -9,8 +9,8 @@ public class HandPoker {
     private HashMap<Integer, Integer> handOccurrence;
     private HashMap<Integer, ArrayList<Integer>> handCombination;
 
-    public HandPoker(Card card1, Card card2, Card card3) {
-        this.handCards = new ArrayList<>(Arrays.asList(card1, card2, card3));
+    public HandPoker(Card card1, Card card2, Card card3, Card card4) {
+        this.handCards = new ArrayList<>(Arrays.asList(card1, card2, card3, card4));
         this.handOccurrence = new HashMap<>();
         this.handCombination = new HashMap<>();
         registerInDictionary();
