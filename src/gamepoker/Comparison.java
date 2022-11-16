@@ -90,6 +90,13 @@ public class Comparison {
         return false;
     }
 
+    private boolean haveFull(HandPoker hand){
+        if (haveBrelan(hand) && havePair(hand)){
+            return true;
+        }
+        return false;
+    }
+
     private ArrayList<Integer> getSingle(HandPoker hand) {
         ArrayList<Integer> list = hand.getHandCombination().get(SINGLE_FOR_DICO_KEY);
         list.sort(Collections.reverseOrder());
@@ -117,6 +124,8 @@ public class Comparison {
     private Combination chooseCombination(HandPoker hand) {
         if (haveCarre(hand)) {
             return Combination.CARRE;
+        } else if (haveFull(hand)){
+            return Combination.FULL;
         } else if (haveSuite(hand)) {
             return Combination.SUITE;
         } else if (haveBrelan(hand)) {
@@ -151,12 +160,17 @@ public class Comparison {
                 } else {
                     return chooseWinningCarre();
                 }
+            case FULL:
+                Optional<Boolean> result2 = chooseWinningBrelan();
+                this.winningCombination = Combination.FULL;
+                return result2;
             case SUITE:
                 if (chooseWinningSingle().isEmpty()) {
                     return Optional.empty(); /*égalité*/
                 } else {
+                    Optional<Boolean> result = chooseWinningSingle();
                     this.winningCombination = Combination.SUITE; /*modifier après l'appel de chooseWinningSingle pour mettre Suite comme combinaison gagnante et non pas "carte la plus haute"*/
-                    return chooseWinningSingle();
+                    return result;
                 }
             case BRELAN:
                 if (chooseWinningBrelan().isEmpty()) {
@@ -190,7 +204,7 @@ public class Comparison {
             case SUITE:
                 listValue.add(getSingle(hand).get(0));
                 return listValue;
-            case BRELAN:
+            case BRELAN: case FULL : /* car la valeur du full correspond à celle du brelan */
                 listValue.add(getBrelan(hand)); /* car getBrelan ne renvoie pas une liste */
                 return listValue;
             default:
