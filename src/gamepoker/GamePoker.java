@@ -14,8 +14,9 @@ public class GamePoker {
          Card Player1card2 = new Card(cardString1[1]);
          Card Player1card3 = new Card(cardString1[2]);
          Card Player1card4 = new Card(cardString1[3]);
+        Card Player1card5 = new Card(cardString1[4]);
 
-         HandPoker hand1 = new HandPoker(Player1card1, Player1card2, Player1card3,Player1card4);
+        HandPoker hand1 = new HandPoker(Player1card1, Player1card2, Player1card3,Player1card4,Player1card5);
 
         System.out.print( "The card of player 2 : " );
         String cardsPlayer2 = scanner.nextLine();
@@ -26,8 +27,9 @@ public class GamePoker {
         Card Player2card2 = new Card(cardString2[1]);
         Card Player2card3 = new Card(cardString2[2]);
         Card Player2card4 = new Card(cardString2[3]);
+        Card Player2card5 = new Card(cardString2[4]);
 
-        HandPoker hand2 = new HandPoker(Player2card1, Player2card2, Player2card3,Player2card4);
+        HandPoker hand2 = new HandPoker(Player2card1, Player2card2, Player2card3,Player2card4,Player2card5);
 
         Comparison c = new Comparison(hand1, hand2);
         int winningCombination = c.getWinningCombination();
