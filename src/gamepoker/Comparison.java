@@ -46,7 +46,6 @@ public class Comparison {
     public static final int COLOR = 6;
     private static final int CARRE_FOR_COMBINATION=8;
 
-
     private final HashMap<Integer, String> correspondanceCombinaisonEntierString = new HashMap<>();
     private int winningCombination;
     private ArrayList<Integer> winningValue;
@@ -69,6 +68,11 @@ public class Comparison {
         }
         Value value = new Value(winningValue.get(0));
         texte = texte + value.toString();
+        for (int i = 1; i<winningValue.size();i++){ /* dans le cas d'une doube pair ou d'une couleur par exemple*/
+            texte = texte + ", ";
+            Value valueMore = new Value(winningValue.get(i));
+            texte = texte + valueMore.toString();
+        }
         return texte;
     }
 
@@ -86,18 +90,14 @@ public class Comparison {
     public Boolean getWinning() {
         return this.firstWinningOnSecond;
     }
-
     public List<Integer> getWinningValue() {
         return this.winningValue;
     }
-
     public int getWinningCombination() {
         return this.winningCombination;
     }
 
-    private boolean haveSingle(HandPoker hand) {
-        return hand.getHandOccurrence().containsValue(SINGLE_FOR_DICO_KEY);
-    }
+    private boolean haveSingle(HandPoker hand) {return hand.getHandOccurrence().containsValue(SINGLE_FOR_DICO_KEY);}
     private boolean havePair(HandPoker hand) { return hand.getHandOccurrence().containsValue(PAIR_FOR_DICO_KEY); }
     private boolean haveBrelan(HandPoker hand) {
         return hand.getHandOccurrence().containsValue(BRELAN_FOR_DICO_KEY);
@@ -105,12 +105,23 @@ public class Comparison {
     private boolean haveCarre(HandPoker hand) {
         return hand.getHandOccurrence().containsValue(CARRE_FOR_DICO_KEY);
     }
+    private boolean haveDoublePair(HandPoker hand) {
+        if (hand.getHandCombination().get(PAIR_FOR_DICO_KEY).size() == 2){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     private ArrayList<Integer> getSingle(HandPoker hand) {
-        return hand.getHandCombination().get(SINGLE_FOR_DICO_KEY);
+        ArrayList<Integer> list = hand.getHandCombination().get(SINGLE_FOR_DICO_KEY);
+        list.sort(Collections.reverseOrder());
+        return list;
     }
     private ArrayList<Integer> getPair(HandPoker hand) {
-        return hand.getHandCombination().get(PAIR_FOR_DICO_KEY);
+        ArrayList<Integer> list = hand.getHandCombination().get(PAIR_FOR_DICO_KEY);
+        list.sort(Collections.reverseOrder());
+        return list;
     }
     private Integer getBrelan(HandPoker hand) {return hand.getHandCombination().get(BRELAN_FOR_DICO_KEY).get(0); /* only one brelan can be reach in any hand -> list of 1 element*/}
     private Integer getCarre(HandPoker hand) {return hand.getHandCombination().get(CARRE_FOR_DICO_KEY).get(0);}
@@ -137,9 +148,17 @@ public class Comparison {
         } else if (haveBrelan(hand)) {
             return BRELAN_FOR_COMBINATION;
         } else if (havePair(hand)) {
-            return PAIR_FOR_COMBINATION;
+            return doublePairOrUniquePair(hand);
         } else {
             return SINGLE_FOR_COMBINATION;
+        }
+    }
+
+    private int doublePairOrUniquePair(HandPoker hand){
+        if (haveDoublePair(hand)){
+            return TWO_PAIR_FOR_COMBINAISON;
+        } else {
+            return PAIR_FOR_COMBINATION;
         }
     }
 
@@ -247,18 +266,18 @@ public class Comparison {
         ArrayList<Integer> handPairSorted = getPair(this.hand2);
         thisPairSorted.sort(Collections.reverseOrder()); /* trier par ordre decroissant pour comparer en premier les plus hautes paires des deux mains*/
         handPairSorted.sort(Collections.reverseOrder());
-
+        this.winningValue = new ArrayList<>();
         for (int i = 0; i < thisPairSorted.size(); i++) {
-            if (thisPairSorted.get(i) != handPairSorted.get(i)) {
-                if (thisPairSorted.get(i) > handPairSorted.get(i)) {
-                    this.winningValue = new ArrayList<>(Collections.singletonList(thisPairSorted.get(i)));
-                    this.winningCombination = PAIR_FOR_COMBINATION;
-                    return true;
-                } else {
-                    this.winningValue = new ArrayList<>(Collections.singletonList(handPairSorted.get(i)));
-                    this.winningCombination = PAIR_FOR_COMBINATION;
-                    return false;
-                }
+            if (thisPairSorted.get(i) == handPairSorted.get(i)) {
+                this.winningValue.add(thisPairSorted.get(i));
+            } else if (thisPairSorted.get(i) > handPairSorted.get(i)) {
+                this.winningValue.add(thisPairSorted.get(i));
+                this.winningCombination = doublePairOrUniquePair(this.hand1);
+                return true;
+            } else {
+                this.winningValue.add(handPairSorted.get(i));
+                this.winningCombination = doublePairOrUniquePair(this.hand2);
+                return false;
             }
         }
         return null;
