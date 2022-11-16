@@ -3,14 +3,13 @@ package gamepoker;
 import java.util.*;
 
 public class HandPoker {
-
-    public static final int NBR_CARDS = 3;
+    public static final int NBR_CARDS = 5;
     private final ArrayList<Card> handCards;
     private HashMap<Integer, Integer> handOccurrence;
     private HashMap<Integer, ArrayList<Integer>> handCombination;
 
-    public HandPoker(Card card1, Card card2, Card card3, Card card4, Card card5) {
-        this.handCards = new ArrayList<>(Arrays.asList(card1, card2, card3, card4, card5));
+    public HandPoker(ArrayList<Card> handCards) {
+        this.handCards = handCards;
         this.handOccurrence = new HashMap<>();
         this.handCombination = new HashMap<>();
         registerInDictionary();
@@ -59,6 +58,7 @@ public class HandPoker {
 
     /**
      * Convert a hand object in a string object to correct display
+     *
      * @return all the card of a hand separate by a space
      */
     @Override
