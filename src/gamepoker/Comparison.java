@@ -39,13 +39,16 @@ public class Comparison {
     public static final int PAIR_FOR_DICO_KEY = 2;
     public static final int BRELAN_FOR_DICO_KEY = 3;
     private static final int CARRE_FOR_DICO_KEY = 4 ;
+
     public static final int SINGLE_FOR_COMBINATION = 1;
     public static final int PAIR_FOR_COMBINATION = 2;
     public static final int TWO_PAIR_FOR_COMBINAISON = 3;
     public static final int BRELAN_FOR_COMBINATION = 4;
-    public static final int COLOR = 6;
+    public static final int SUITE_FOR_COMBINAISON = 5;
+    public static final int COLOR_FOR_COMBINAISON = 6;
+    public static final int FULL_FOR_COMBINAISON = 7;
     private static final int CARRE_FOR_COMBINATION=8;
-
+    private static final int QUITE_FLUSH_FOR_COMBINAISON = 9;
     private final HashMap<Integer, String> correspondanceCombinaisonEntierString = new HashMap<>();
     private int winningCombination;
     private ArrayList<Integer> winningValue;
@@ -112,6 +115,15 @@ public class Comparison {
             return false;
         }
     }
+    private boolean haveSuite(HandPoker hand){
+        if (hand.getHandCombination().get(SINGLE_FOR_DICO_KEY).size() == 5){
+            int difference = getSingle(hand).get(0) - getSingle(hand).get(4);
+            if (difference == 4){
+                return true;
+            }
+        }
+        return false;
+    }
 
     private ArrayList<Integer> getSingle(HandPoker hand) {
         ArrayList<Integer> list = hand.getHandCombination().get(SINGLE_FOR_DICO_KEY);
@@ -143,13 +155,16 @@ public class Comparison {
      * @return the number of the higher combination
      */
     private int chooseCombination(HandPoker hand) {
-        if (haveCarre(hand)){
+        if (haveCarre(hand)) {
             return CARRE_FOR_COMBINATION;
+        } else if (haveSuite(hand)){
+            return SUITE_FOR_COMBINAISON;
         } else if (haveBrelan(hand)) {
             return BRELAN_FOR_COMBINATION;
         } else if (havePair(hand)) {
             return doublePairOrUniquePair(hand);
         } else {
+
             return SINGLE_FOR_COMBINATION;
         }
     }
@@ -174,6 +189,15 @@ public class Comparison {
                     }
                     else {
                         return chooseWinningCarre();
+                    }
+
+                case SUITE_FOR_COMBINAISON:
+                    if (chooseWinningSingle()==null){
+                        return null; /*égalité*/
+                    } else {
+                        Boolean result = chooseWinningSingle();
+                        this.winningCombination = SUITE_FOR_COMBINAISON; /*modifier après l'appel de chooseWinningSingle pour mettre Suite comme combinaison gagnante et non pas "carte la plus haute"*/
+                        return result;
                     }
 
                 case BRELAN_FOR_COMBINATION :
@@ -207,6 +231,9 @@ public class Comparison {
         switch (number){
             case CARRE_FOR_COMBINATION :
                 listValue.add(getCarre(hand)); /* car getCarre ne renvoie pas une liste */
+                return listValue;
+            case SUITE_FOR_COMBINAISON:
+                listValue.add(getSingle(hand).get(0));
                 return listValue;
             case BRELAN_FOR_COMBINATION:
                 listValue.add(getBrelan(hand)); /* car getBrelan ne renvoie pas une liste */
@@ -327,8 +354,6 @@ public class Comparison {
             return null;
         }
     }
-
-
 
 
 }
