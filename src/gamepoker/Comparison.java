@@ -82,7 +82,7 @@ public class Comparison {
         return havePair(hand) && hand.getHandCombination().get(PAIR_FOR_DICO_KEY).size() == 2;
     }
 
-    private boolean haveSuite(HandPoker hand) {
+    private boolean haveStraight(HandPoker hand) {
         if (haveSingle(hand) && hand.getHandCombination().get(SINGLE_FOR_DICO_KEY).size() == 5) {
             int difference = getSingle(hand).get(0) - getSingle(hand).get(4);
             return difference == 4;
@@ -95,6 +95,21 @@ public class Comparison {
             return true;
         }
         return false;
+    }
+
+    private  boolean haveFlush(HandPoker hand) {
+        boolean bool = true;
+        Color colorCard1 = hand.getHandCards().get(0).getColor();
+        int i =1;
+        while(bool && i < 5){
+            bool = hand.getHandCards().get(i).getColor().equals(colorCard1);
+            i++;
+        }
+        return bool;
+    }
+
+    private  boolean haveStraightFlush(HandPoker hand) {
+        return haveStraight(hand) && haveFlush(hand);
     }
 
     private ArrayList<Integer> getSingle(HandPoker hand) {
@@ -122,11 +137,15 @@ public class Comparison {
      * @return the higher combination
      */
     private Combination chooseCombination(HandPoker hand) {
-        if (haveCarre(hand)) {
+        if (haveStraightFlush(hand)) {
+            return Combination.STRAIGHT_FLUSH;
+        } else if (haveCarre(hand)) {
             return Combination.CARRE;
         } else if (haveFull(hand)){
             return Combination.FULL;
-        } else if (haveSuite(hand)) {
+        } else if (haveFlush(hand)) {
+            return Combination.FLUSH;
+        } else if (haveStraight(hand)) {
             return Combination.SUITE;
         } else if (haveBrelan(hand)) {
             return Combination.BRELAN;
@@ -154,6 +173,10 @@ public class Comparison {
         }
 
         switch (chooseCombination(this.handP1)) {
+            case STRAIGHT_FLUSH:
+                Optional<Boolean> result4 = chooseWinningStraightFlush();
+                this.winningCombination = Combination.STRAIGHT_FLUSH;
+                return result4;
             case CARRE:
                 if (chooseWinningCarre().isEmpty()) {
                     return chooseWinningSingle();
@@ -164,6 +187,10 @@ public class Comparison {
                 Optional<Boolean> result2 = chooseWinningBrelan();
                 this.winningCombination = Combination.FULL;
                 return result2;
+            case FLUSH:
+                Optional<Boolean> result3 = chooseWinningFlush();
+                this.winningCombination = Combination.FLUSH;
+                return result3;
             case SUITE:
                 if (chooseWinningSingle().isEmpty()) {
                     return Optional.empty(); /*égalité*/
@@ -324,5 +351,13 @@ public class Comparison {
         } else {
             return Optional.empty();
         }
+    }
+
+    private Optional<Boolean> chooseWinningFlush() {
+        return chooseWinningSingle();
+    }
+
+    private Optional<Boolean> chooseWinningStraightFlush() {
+        return chooseWinningSingle();
     }
 }

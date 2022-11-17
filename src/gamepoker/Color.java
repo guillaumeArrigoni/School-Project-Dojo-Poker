@@ -3,10 +3,10 @@ package gamepoker;
 public class Color {
     private String name;
 
-    public static Color Tr = new Color("Tr") ;
-    public static Color Pi = new Color("Pi");
-    public static Color Co = new Color("Co");
-    public static Color Ca = new Color("Ca");
+    public static final Color Tr = new Color("Tr") ;
+    public static final Color Pi = new Color("Pi");
+    public static final Color Co = new Color("Co");
+    public static final Color Ca = new Color("Ca");
 
     public Color(String name) {
         this.name = name;

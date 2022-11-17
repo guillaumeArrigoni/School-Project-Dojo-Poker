@@ -12,14 +12,22 @@ public class Card implements Comparable<Card> {
      * The value of the card with a position between 2 and 14 to determine the highest to the lowest card
      */
     private Value value;
+    private Color color;
 
     /**
      * Create Card with a specified value
      *
      * @param value The value's card
      */
-    public Card(String value) {
-        this.value = new Value(value);
+    public Card(String card) {
+        if( card.length() == 4) {
+            this.value = new Value(card.substring(0,2));
+            this.color = new Color(card.substring(2,4));
+        }
+        else {
+            this.value = new Value(card.substring(0,1));
+            this.color = new Color(card.substring(1,3));
+        }
     }
 
     /**
@@ -28,6 +36,8 @@ public class Card implements Comparable<Card> {
     public Value getValue() {
         return this.value;
     }
+
+    public Color getColor() { return this.color;}
 
     /**
      * Overriding equals() to compare two Card objects
@@ -49,7 +59,7 @@ public class Card implements Comparable<Card> {
         Card card2 = (Card) object;
 
         // Compare the card value data and return accordingly
-        return card2.value.equals(this.value);
+        return card2.value.equals(this.value) && card2.color.equals(this.color);
     }
 
     /**

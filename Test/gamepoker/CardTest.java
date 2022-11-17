@@ -12,8 +12,8 @@ class CardTest {
 
     @BeforeAll
     public static void setupCard() {
-        cardTenTr = new Card("10", "Tr");
-        cardAsPi = new Card("A", "Pi");
+        cardTenTr = new Card("10Tr");
+        cardAsPi = new Card("APi");
     }
 
     @Test
@@ -25,6 +25,7 @@ class CardTest {
     @Test
     void getColorTest() {
         assertEquals(new Color("Tr"), cardTenTr.getColor());
+        assertEquals(new Color("Pi"), cardAsPi.getColor());
     }
 
     @Test
@@ -41,7 +42,7 @@ class CardTest {
 
     @Test
     void compareToTest() {
-        assertEquals(-1, cardTenTr.compareTo(cardTenTr));
+        assertEquals(-1, cardTenTr.compareTo(cardAsPi));
         assertEquals(0, cardTenTr.compareTo(cardTenTr));
         assertEquals(1, cardAsPi.compareTo(cardTenTr));
     }

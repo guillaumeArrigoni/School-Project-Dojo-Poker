@@ -7,10 +7,10 @@ public enum Combination {
     TWO_PAIR(3, "a double pair"),
     BRELAN(4, "a three of a kind"),
     SUITE(5, "a straight"),
-    COLOR(6, "a flush"),
+    FLUSH(6, "a flush"),
     FULL(7, "a full"),
     CARRE(8, "a four of a kind"),
-    QUITE_FLUSH(9, "a quinte flush");
+    STRAIGHT_FLUSH(9, "a straight flush");
 
     private final int rank;
 
