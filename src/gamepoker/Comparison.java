@@ -20,7 +20,7 @@ public class Comparison {
     public static final int SINGLE_FOR_DICO_KEY = 1;
     public static final int PAIR_FOR_DICO_KEY = 2;
     public static final int BRELAN_FOR_DICO_KEY = 3;
-    private static final int CARRE_FOR_DICO_KEY = 4;
+    public static final int CARRE_FOR_DICO_KEY = 4;
 
     private Combination winningCombination;
     private ArrayList<Integer> winningValue;
