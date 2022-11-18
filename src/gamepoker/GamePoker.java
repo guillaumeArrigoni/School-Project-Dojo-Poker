@@ -17,10 +17,10 @@ public class GamePoker {
         List<HandPoker> theHandsPoker = registerHandsPoker(NUMBER_OF_PLAYER);
         Comparison comparison = new Comparison(theHandsPoker.get(PLAYER1), theHandsPoker.get(PLAYER2));
 
-        if (comparison.getWinning().isPresent()) {
+        if (comparison.getWinning().isEmpty()) {
             System.out.println("Both player have same hand ! No one win");
         } else {
-            if (comparison.getWinning().isPresent()) {
+            if (comparison.getWinning().get()) {
                 System.out.println("Player 1 win with " + comparison);
             } else {
                 System.out.println("Player 2 win with " + comparison);
