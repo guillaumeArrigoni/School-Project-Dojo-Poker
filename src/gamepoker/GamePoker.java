@@ -1,12 +1,8 @@
 package gamepoker;
 
-import gamepoker.exception.PokerException;
-import gamepoker.exception.TwoIdenticalCardsException;
-import gamepoker.exception.WrongNumberOfCardsException;
+import gamepoker.exception.*;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class GamePoker {
 
@@ -34,48 +30,59 @@ public class GamePoker {
         List<HandPoker> handsPoker = new ArrayList<>(numberOfPlayer);
 
         for (int playerNumber = 1; playerNumber <= numberOfPlayer; playerNumber++) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("The card of player " + playerNumber + " : ");
-            String[] cardString = scanner.nextLine().split(" ");
 
-            if (cardString.length != HandPoker.NBR_CARDS) {
-                throw new WrongNumberOfCardsException();
-            }
-
+            boolean existError = true;
             ArrayList<Card> handCards = new ArrayList<>(HandPoker.NBR_CARDS);
-            for (int cardNumber = 0; cardNumber < HandPoker.NBR_CARDS; cardNumber++) {
-                handCards.add(new Card(cardString[cardNumber]));
-            }
-            handsPoker.add(new HandPoker(handCards));
-        }
-
-        checkIfCardAlreadyExist(handsPoker);
-        return handsPoker;
-    }
+            int nbCardRemaining = HandPoker.NBR_CARDS;
+            String errorMessage = "";
+            ArrayList<Card> allCard = new ArrayList<>();
 
 
-    private static void checkIfCardAlreadyExist(List<HandPoker> handPoker) throws TwoIdenticalCardsException {
-        ArrayList<Card> AllCard = new ArrayList<>();
-        for (int i = 0;i<handPoker.size();i++){
-            AllCard.addAll(handPoker.get(i).getHandCards());
-        }
-        Map<Card, Long> existDouble = AllCard.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        System.out.println(existDouble);
-        long a = 2;
-        if (existDouble.containsValue(a)){
-            throw new TwoIdenticalCardsException();
-        }
-    }
-    /*private static void checkIfCardAlreadyExist(List<HandPoker> handPoker) throws TwoIdenticalCardsException {
-        ArrayList<Card> AllCard = new ArrayList<>();
-        for (int i = 0; i<handPoker.size();i++){
-            for (int j=0; j<handPoker.get(i).getHandCards().size();j++){
-                if (AllCard.contains(handPoker.get(i).getHandCards().get(j))){
-                    throw new TwoIdenticalCardsException();
-                } else {
-                    AllCard.add(handPoker.get(i).getHandCards().get(j));
+            while (existError) {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("The card of player " + playerNumber + " : ");
+                System.out.println("Please enter " + nbCardRemaining + " card(s).");
+                String[] cardString = scanner.nextLine().split(" ");
+
+                try {
+                    if (cardString.length != nbCardRemaining) {
+                        throw new WrongNumberOfCardsException();
+                    }
+                    for (int cardNumber = 0; cardNumber < nbCardRemaining; cardNumber++) {
+                        Card cardToAdd = new Card(cardString[cardNumber]);
+                        checkIfCardAlreadyExist(allCard, cardToAdd);
+                        handCards.add(cardToAdd);
+                        allCard.add(cardToAdd);
+                    }
+                    handsPoker.add(new HandPoker(handCards));
+                    existError = false;
+                } catch (WrongNumberOfCardsException e) {
+                    errorMessage = "You didn't have enter the number of card requested.";
+                } catch (IncorrectColorException e) {
+                    errorMessage = "The card " + cardString[handCards.size()] + " don't have a valid color.";
+                } catch (IncorrectValueException e) {
+                    errorMessage = "The card " + cardString[handCards.size()] + " don't have a valid value.";
+                    e.printStackTrace();
+                } catch (IncorrectCardException e) {
+                    errorMessage = "The card " + cardString[handCards.size()] + " is not valid.";
+                } catch (TwoIdenticalCardsException e){
+                    errorMessage = "The card " + cardString[handCards.size()] + " already exist.";
+                } finally {
+                    if (existError){
+                        System.out.println("\nAn error has occurred");
+                        errorMessage = errorMessage + "\n";
+                        System.out.println(errorMessage);
+                    }
+                    nbCardRemaining = HandPoker.NBR_CARDS - handCards.size();
                 }
             }
         }
-    }*/
+        return handsPoker;
+    }
+
+    private static void checkIfCardAlreadyExist(List<Card> cardList, Card cardToTest) throws TwoIdenticalCardsException{
+        if (cardList.contains(cardToTest)) {
+            throw new TwoIdenticalCardsException();
+        }
+    }
 }
