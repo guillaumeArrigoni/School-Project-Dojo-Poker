@@ -4,9 +4,9 @@ import gamepoker.exception.PokerException;
 import gamepoker.exception.TwoIdenticalCardsException;
 import gamepoker.exception.WrongNumberOfCardsException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class GamePoker {
 
@@ -44,20 +44,38 @@ public class GamePoker {
 
             ArrayList<Card> handCards = new ArrayList<>(HandPoker.NBR_CARDS);
             for (int cardNumber = 0; cardNumber < HandPoker.NBR_CARDS; cardNumber++) {
-                Card cardToAdd = new Card(cardString[cardNumber]);
-                if (checkIfCardAlreadyExist(handCards,cardToAdd)){
-                    handCards.add(cardToAdd);
-                } else {
-                    throw new TwoIdenticalCardsException();
-                }
-
+                handCards.add(new Card(cardString[cardNumber]));
             }
             handsPoker.add(new HandPoker(handCards));
         }
+
+        checkIfCardAlreadyExist(handsPoker);
         return handsPoker;
     }
 
-    private static boolean checkIfCardAlreadyExist(ArrayList<Card> handCards, Card cardToTest){
-        return handCards.contains(cardToTest);
+
+    private static void checkIfCardAlreadyExist(List<HandPoker> handPoker) throws TwoIdenticalCardsException {
+        ArrayList<Card> AllCard = new ArrayList<>();
+        for (int i = 0;i<handPoker.size();i++){
+            AllCard.addAll(handPoker.get(i).getHandCards());
+        }
+        Map<Card, Long> existDouble = AllCard.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        System.out.println(existDouble);
+        long a = 2;
+        if (existDouble.containsValue(a)){
+            throw new TwoIdenticalCardsException();
+        }
     }
+    /*private static void checkIfCardAlreadyExist(List<HandPoker> handPoker) throws TwoIdenticalCardsException {
+        ArrayList<Card> AllCard = new ArrayList<>();
+        for (int i = 0; i<handPoker.size();i++){
+            for (int j=0; j<handPoker.get(i).getHandCards().size();j++){
+                if (AllCard.contains(handPoker.get(i).getHandCards().get(j))){
+                    throw new TwoIdenticalCardsException();
+                } else {
+                    AllCard.add(handPoker.get(i).getHandCards().get(j));
+                }
+            }
+        }
+    }*/
 }
