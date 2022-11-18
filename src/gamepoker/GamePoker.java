@@ -7,15 +7,15 @@ import java.util.Scanner;
 public class GamePoker {
 
     public static final int NUMBER_OF_PLAYER = 2;
-    public static final int PLAYER1 = 1;
-    public static final int PLAYER2 = 2;
+    public static final int PLAYER1 = 0;
+    public static final int PLAYER2 = 1;
 
     public static void main(String[] args) {
 
         List<HandPoker> theHandsPoker = registerHandsPoker(NUMBER_OF_PLAYER);
         Comparison comparison = new Comparison(theHandsPoker.get(PLAYER1), theHandsPoker.get(PLAYER2));
 
-        if (comparison.getWinning() == null) {
+        if (comparison.getWinning().isPresent()) {
             System.out.println("Both player have same hand ! No one win");
         } else {
             if (comparison.getWinning().isPresent()) {
