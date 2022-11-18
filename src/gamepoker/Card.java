@@ -1,5 +1,6 @@
 package gamepoker;
 
+import gamepoker.exception.IncorrectCardException;
 import gamepoker.exception.PokerException;
 
 import java.util.Objects;
@@ -25,9 +26,11 @@ public class Card implements Comparable<Card> {
         if (card.length() == 4) {
             this.value = new Value(card.substring(0, 2));
             this.color = new Color(card.substring(2, 4));
-        } else {
+        } else if (card.length() == 3) {
             this.value = new Value(card.substring(0, 1));
             this.color = new Color(card.substring(1, 3));
+        } else {
+            throw new IncorrectCardException();
         }
     }
 

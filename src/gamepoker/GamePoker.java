@@ -1,6 +1,7 @@
 package gamepoker;
 
 import gamepoker.exception.PokerException;
+import gamepoker.exception.WrongNumberOfCardsException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,10 @@ public class GamePoker {
             Scanner scanner = new Scanner(System.in);
             System.out.print("The card of player " + playerNumber + " : ");
             String[] cardString = scanner.nextLine().split(" ");
+
+            if (cardString.length != HandPoker.NBR_CARDS) {
+                throw new WrongNumberOfCardsException();
+            }
 
             ArrayList<Card> handCards = new ArrayList<>(HandPoker.NBR_CARDS);
             for (int cardNumber = 0; cardNumber < HandPoker.NBR_CARDS; cardNumber++) {
