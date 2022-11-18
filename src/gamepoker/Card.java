@@ -1,5 +1,7 @@
 package gamepoker;
 
+import gamepoker.exception.PokerException;
+
 import java.util.Objects;
 
 /**
@@ -15,18 +17,17 @@ public class Card implements Comparable<Card> {
     private Color color;
 
     /**
-     * Create Card with a specified value
+     * Create Card with a specified value and color
      *
-     * @param value The value's card
+     * @param card The string contains concatenated value and color
      */
-    public Card(String card) {
-        if( card.length() == 4) {
-            this.value = new Value(card.substring(0,2));
-            this.color = new Color(card.substring(2,4));
-        }
-        else {
-            this.value = new Value(card.substring(0,1));
-            this.color = new Color(card.substring(1,3));
+    public Card(String card) throws PokerException {
+        if (card.length() == 4) {
+            this.value = new Value(card.substring(0, 2));
+            this.color = new Color(card.substring(2, 4));
+        } else {
+            this.value = new Value(card.substring(0, 1));
+            this.color = new Color(card.substring(1, 3));
         }
     }
 
@@ -37,7 +38,9 @@ public class Card implements Comparable<Card> {
         return this.value;
     }
 
-    public Color getColor() { return this.color;}
+    public Color getColor() {
+        return this.color;
+    }
 
     /**
      * Overriding equals() to compare two Card objects

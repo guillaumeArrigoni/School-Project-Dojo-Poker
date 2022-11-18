@@ -1,5 +1,7 @@
 package gamepoker;
 
+import gamepoker.exception.PokerException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,7 +12,7 @@ public class GamePoker {
     public static final int PLAYER1 = 0;
     public static final int PLAYER2 = 1;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws PokerException {
 
         List<HandPoker> theHandsPoker = registerHandsPoker(NUMBER_OF_PLAYER);
         Comparison comparison = new Comparison(theHandsPoker.get(PLAYER1), theHandsPoker.get(PLAYER2));
@@ -26,7 +28,7 @@ public class GamePoker {
         }
     }
 
-    public static List<HandPoker> registerHandsPoker(int numberOfPlayer) {
+    public static List<HandPoker> registerHandsPoker(int numberOfPlayer) throws PokerException {
         List<HandPoker> handsPoker = new ArrayList<>(numberOfPlayer);
 
         for (int playerNumber = 1; playerNumber <= numberOfPlayer; playerNumber++) {
@@ -40,7 +42,6 @@ public class GamePoker {
             }
             handsPoker.add(new HandPoker(handCards));
         }
-
         return handsPoker;
     }
 }

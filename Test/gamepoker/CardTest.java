@@ -1,5 +1,6 @@
 package gamepoker;
 
+import gamepoker.exception.PokerException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -11,19 +12,19 @@ class CardTest {
     private static Card cardAsPi;
 
     @BeforeAll
-    public static void setupCard() {
+    public static void setupCard() throws PokerException {
         cardTenTr = new Card("10Tr");
         cardAsPi = new Card("APi");
     }
 
     @Test
-    void getValueTest() {
+    void getValueTest() throws PokerException {
         assertEquals(new Value("10"), cardTenTr.getValue());
         assertEquals(new Value("A"), cardAsPi.getValue());
     }
 
     @Test
-    void getColorTest() {
+    void getColorTest() throws PokerException {
         assertEquals(new Color("Tr"), cardTenTr.getColor());
         assertEquals(new Color("Pi"), cardAsPi.getColor());
     }
@@ -46,5 +47,4 @@ class CardTest {
         assertEquals(0, cardTenTr.compareTo(cardTenTr));
         assertEquals(1, cardAsPi.compareTo(cardTenTr));
     }
-
 }

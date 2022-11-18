@@ -1,5 +1,8 @@
 package gamepoker;
 
+import gamepoker.exception.IncorrectValueException;
+import gamepoker.exception.PokerException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,19 +17,39 @@ import java.util.Objects;
  */
 public class Value implements Comparable<Value> {
 
-    public static final Value DEUX = new Value("2");
-    public static final Value TROIS = new Value("3");
-    public static final Value QUATRE = new Value("4");
-    public static final Value CINQ = new Value("5");
-    public static final Value SIX = new Value("6");
-    public static final Value SEPT = new Value("7");
-    public static final Value HUIT = new Value("8");
-    public static final Value NEUF = new Value("9");
-    public static final Value DIX = new Value("10");
-    public static final Value VALET = new Value("V");
-    public static final Value DAME = new Value("D");
-    public static final Value ROI = new Value("R");
-    public static final Value AS = new Value("A");
+    public static final Value DEUX;
+    public static final Value TROIS;
+    public static final Value QUATRE;
+    public static final Value CINQ;
+    public static final Value SIX;
+    public static final Value SEPT;
+    public static final Value HUIT;
+    public static final Value NEUF;
+    public static final Value DIX;
+    public static final Value VALET;
+    public static final Value DAME;
+    public static final Value ROI;
+    public static final Value AS;
+
+    static {
+        try {
+            DEUX = new Value("2");
+            TROIS = new Value("3");
+            QUATRE = new Value("4");
+            CINQ = new Value("5");
+            SIX = new Value("6");
+            SEPT = new Value("7");
+            HUIT = new Value("8");
+            NEUF = new Value("9");
+            DIX = new Value("10");
+            VALET = new Value("V");
+            DAME = new Value("D");
+            ROI = new Value("R");
+            AS = new Value("A");
+        } catch (PokerException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * The name of the value
@@ -38,9 +61,11 @@ public class Value implements Comparable<Value> {
      *
      * @param name of the value object
      */
-    public Value(String name) {
+    public Value(String name) throws PokerException {
+        if (!validValueName(name)) {
+            throw new IncorrectValueException();
+        }
         this.name = name;
-        //TODO: Create an exception if name is not correct
     }
 
     /**
@@ -48,10 +73,12 @@ public class Value implements Comparable<Value> {
      *
      * @param position a int between 2-14
      */
-    public Value(int position) {
+    public Value(int position) throws PokerException {
+        if (position < 2 || position > 14) {
+            throw new IncorrectValueException();
+        }
         //Get name corresponding to the position in AllValues array
         this.name = getAllValues().get(position).getName();
-        //TODO: Create an exception if position is not correct (2-14)
     }
 
     /**
@@ -73,6 +100,16 @@ public class Value implements Comparable<Value> {
                 return position;
         }
         return -1; //TODO: Create an exception here
+    }
+
+    /**
+     * Check if the name past in parameter is valid
+     *
+     * @param name that must be validated
+     * @return True if the name is valid or false if not
+     */
+    private boolean validValueName(String name) {
+        return Arrays.asList("2", "3", "4", "5", "6", "7", "8", "9", "10", "V", "D", "R", "A").contains(name);
     }
 
     /**

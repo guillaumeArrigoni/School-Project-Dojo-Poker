@@ -1,5 +1,7 @@
 package gamepoker;
 
+import gamepoker.exception.IncorrectValueException;
+import gamepoker.exception.PokerException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -7,12 +9,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ValueTest {
 
-    private static Stream<Arguments> provideValueStringConstructor() {
+    private static Stream<Arguments> provideValueStringConstructor() throws PokerException {
         return Stream.of(
                 Arguments.of(new Value("8"), "8", 8, Value.HUIT),
                 Arguments.of(new Value("3"), "3", 3, Value.TROIS),
@@ -22,7 +23,7 @@ class ValueTest {
         );
     }
 
-    private static Stream<Arguments> provideValueIntConstructor() {
+    private static Stream<Arguments> provideValueIntConstructor() throws PokerException {
         return Stream.of(
                 Arguments.of(new Value(8), "8", 8, Value.HUIT),
                 Arguments.of(new Value(3), "3", 3, Value.TROIS),
@@ -66,5 +67,15 @@ class ValueTest {
         assertEquals(1, Value.AS.compareTo(Value.DEUX));
         assertEquals(0, Value.DEUX.compareTo(Value.DEUX));
         assertEquals(-1, Value.DEUX.compareTo(Value.AS));
+    }
+
+    @Test
+    void assertExceptionWithIncorrectValueTest() {
+        assertThrows(IncorrectValueException.class, () -> new Value("1"));
+        assertThrows(IncorrectValueException.class, () -> new Value(""));
+        assertThrows(IncorrectValueException.class, () -> new Value("As"));
+        assertThrows(IncorrectValueException.class, () -> new Value(15));
+        assertThrows(IncorrectValueException.class, () -> new Value(1));
+        assertThrows(IncorrectValueException.class, () -> new Value(null));
     }
 }

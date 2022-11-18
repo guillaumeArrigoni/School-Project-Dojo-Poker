@@ -1,14 +1,33 @@
 package gamepoker;
 
+import gamepoker.exception.IncorrectColorException;
+import gamepoker.exception.PokerException;
+
+import java.util.Arrays;
+
 public class Color {
     private String name;
 
-    public static final Color Tr = new Color("Tr") ;
-    public static final Color Pi = new Color("Pi");
-    public static final Color Co = new Color("Co");
-    public static final Color Ca = new Color("Ca");
+    public static final Color Tr;
+    public static final Color Pi;
+    public static final Color Co;
+    public static final Color Ca;
 
-    public Color(String name) {
+    static {
+        try {
+            Tr = new Color("Tr");
+            Pi = new Color("Pi");
+            Co = new Color("Co");
+            Ca = new Color("Ca");
+        } catch (PokerException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Color(String name) throws PokerException {
+        if (!validColorName(name)) {
+            throw new IncorrectColorException();
+        }
         this.name = name;
     }
 
@@ -33,10 +52,18 @@ public class Color {
         return color2.name.equals(this.name);
     }
 
+    /**
+     * Check if the name past in parameter is valid
+     *
+     * @param name that must be validated
+     * @return True if the name is valid or false if not
+     */
+    private boolean validColorName(String name) {
+        return Arrays.asList("Tr", "Pi", "Co", "Ca").contains(name);
+    }
+
     @Override
     public String toString() {
         return this.name;
     }
-
-
 }
