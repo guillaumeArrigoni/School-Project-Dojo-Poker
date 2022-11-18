@@ -1,16 +1,11 @@
 package gamepoker;
 
+import gamepoker.exception.PokerException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-/**
- * NOTE
- * for the combination : color :
- * for the test when both hand have color :
- * reuse the chooseWinningSingle (just add the check if all the card have the same color)
- */
 
 public class Comparison {
     /**
@@ -45,9 +40,24 @@ public class Comparison {
         if (winningCombination != Combination.HIGHCARD) {
             combinationString += " of ";
         }
-        String comparisonString = combinationString;
-        this.winningValue.forEach(value -> comparisonString.concat(value.toString() + ", "));
-        return comparisonString;
+        Value value = null;
+        try {
+            value = new Value(winningValue.get(0));
+        } catch (PokerException e) {
+            throw new RuntimeException(e);
+        }
+        combinationString = combinationString + value.toString();
+        for (int i = 1; i<winningValue.size();i++){ /* dans le cas d'une doube pair ou d'une couleur par exemple*/
+            combinationString = combinationString + ", ";
+            Value valueMore = null;
+            try {
+                valueMore = new Value(winningValue.get(i));
+            } catch (PokerException e) {
+                throw new RuntimeException(e);
+            }
+            combinationString = combinationString + valueMore.toString();
+        }
+        return combinationString;
     }
 
     public Optional<Boolean> getWinning() {
@@ -91,10 +101,7 @@ public class Comparison {
     }
 
     private boolean haveFull(HandPoker hand){
-        if (haveBrelan(hand) && havePair(hand)){
-            return true;
-        }
-        return false;
+        return(haveBrelan(hand) && havePair(hand));
     }
 
     private  boolean haveFlush(HandPoker hand) {
@@ -174,9 +181,7 @@ public class Comparison {
 
         switch (chooseCombination(this.handP1)) {
             case STRAIGHT_FLUSH:
-                Optional<Boolean> result4 = chooseWinningStraightFlush();
-                this.winningCombination = Combination.STRAIGHT_FLUSH;
-                return result4;
+                return chooseWinningStraightFlush();
             case CARRE:
                 if (chooseWinningCarre().isEmpty()) {
                     return chooseWinningSingle();
@@ -184,21 +189,11 @@ public class Comparison {
                     return chooseWinningCarre();
                 }
             case FULL:
-                Optional<Boolean> result2 = chooseWinningBrelan();
-                this.winningCombination = Combination.FULL;
-                return result2;
+                return chooseWinningFull();
             case FLUSH:
-                Optional<Boolean> result3 = chooseWinningFlush();
-                this.winningCombination = Combination.FLUSH;
-                return result3;
+                return chooseWinningFlush();
             case SUITE:
-                if (chooseWinningSingle().isEmpty()) {
-                    return Optional.empty(); /*égalité*/
-                } else {
-                    Optional<Boolean> result = chooseWinningSingle();
-                    this.winningCombination = Combination.SUITE; /*modifier après l'appel de chooseWinningSingle pour mettre Suite comme combinaison gagnante et non pas "carte la plus haute"*/
-                    return result;
-                }
+                return chooseWinningSuite();
             case BRELAN:
                 if (chooseWinningBrelan().isEmpty()) {
                     return chooseWinningSingle(); /*car si la deuxième plus haute combinaison est une paire alors il s'agit d'un full et non un brelan*/
@@ -211,10 +206,9 @@ public class Comparison {
                 } else {
                     return chooseWinningPair();
                 }
-            default: /*when case equals to SINGLE8FOR8COMBINATION*/
+            default: /*when case equals to SINGLE_FOR_COMBINATION*/
                 return chooseWinningSingle();
         }
-
     }
 
     /**
@@ -228,7 +222,7 @@ public class Comparison {
             case CARRE:
                 listValue.add(getCarre(hand)); /* car getCarre ne renvoie pas une liste */
                 return listValue;
-            case SUITE:
+            case FLUSH: case SUITE : case STRAIGHT_FLUSH :
                 listValue.add(getSingle(hand).get(0));
                 return listValue;
             case BRELAN: case FULL : /* car la valeur du full correspond à celle du brelan */
@@ -260,10 +254,10 @@ public class Comparison {
     }
 
     /**
-     * return a Boolean to know the winning brelan between 2 brelan
+     * return a Boolean to know the winning three of a kind between 2 three of a kind
      * Update winningCombination and winningValue
      *
-     * @return (true, false or empty) if the first brelan is (higher, lower or equals) to the second brelan
+     * @return (true, false or empty) if the first three of a kind is (higher, lower or equals) to the second one
      */
     private Optional<Boolean> chooseWinningBrelan() {
         if (getBrelan(this.handP1) > getBrelan(this.handP2)) {
@@ -339,6 +333,12 @@ public class Comparison {
         return Optional.empty();
     }
 
+    /**
+     * return a Boolean to know the winning four of a kind between 2 four of a kind
+     * Update winningCombination and winningValue
+     *
+     * @return (true, false or empty) if the first four of a kind is (higher, lower or equals) to the second one
+     */
     private Optional<Boolean> chooseWinningCarre() {
         if (getCarre(this.handP1) > getCarre(this.handP2)) {
             this.winningValue = new ArrayList<>(Collections.singletonList(getCarre(this.handP1)));
@@ -353,11 +353,55 @@ public class Comparison {
         }
     }
 
-    private Optional<Boolean> chooseWinningFlush() {
-        return chooseWinningSingle();
+    /**
+     * return a Boolean to know the winning full between 2 full
+     * Update winningCombination and winningValue
+     *
+     * @return (true, false or empty) if the first full is (higher, lower or equals) to the second one
+     */
+    private Optional<Boolean> chooseWinningFull(){
+        Optional<Boolean> result2 = chooseWinningBrelan();
+        this.winningCombination = Combination.FULL;
+        return result2;
     }
 
-    private Optional<Boolean> chooseWinningStraightFlush() {
-        return chooseWinningSingle();
+    /**
+     * return a Boolean to know the winning full between 2 full
+     * Update winningCombination and winningValue
+     *
+     * @return (true, false or empty) if the first full is (higher, lower or equals) to the second one
+     */
+    private Optional<Boolean> chooseWinningFlush() {
+        Optional<Boolean> result3 = chooseWinningSingle();
+        this.winningCombination = Combination.FLUSH;
+        return result3;
+    }
+
+    /**
+     * return a Boolean to know the winning straight between 2 straight
+     * Update winningCombination and winningValue
+     *
+     * @return (true, false or empty) if the first straight is (higher, lower or equals) to the second one
+     */
+    private Optional<Boolean> chooseWinningSuite() {
+        if (chooseWinningSingle().isEmpty()) {
+            return Optional.empty(); /*égalité*/
+        } else {
+            Optional<Boolean> result = chooseWinningSingle();
+            this.winningCombination = Combination.SUITE; /*modifier après l'appel de chooseWinningSingle pour mettre Suite comme combinaison gagnante et non pas "carte la plus haute"*/
+            return result;
+        }
+    }
+
+    /**
+     * return a Boolean to know the winning straight flush between 2 straight flush
+     * Update winningCombination and winningValue
+     *
+     * @return (true, false or empty) if the first straight flush is (higher, lower or equals) to the second one
+     */
+    private Optional<Boolean> chooseWinningStraightFlush(){
+        Optional<Boolean> result4 = chooseWinningStraightFlush();
+        this.winningCombination = Combination.STRAIGHT_FLUSH;
+        return result4;
     }
 }
