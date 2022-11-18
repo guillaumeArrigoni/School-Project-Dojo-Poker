@@ -1,6 +1,7 @@
 package gamepoker;
 
 import gamepoker.exception.PokerException;
+import gamepoker.exception.TwoIdenticalCardsException;
 import gamepoker.exception.WrongNumberOfCardsException;
 
 import java.util.ArrayList;
@@ -43,10 +44,20 @@ public class GamePoker {
 
             ArrayList<Card> handCards = new ArrayList<>(HandPoker.NBR_CARDS);
             for (int cardNumber = 0; cardNumber < HandPoker.NBR_CARDS; cardNumber++) {
-                handCards.add(new Card(cardString[cardNumber]));
+                Card cardToAdd = new Card(cardString[cardNumber]);
+                if (checkIfCardAlreadyExist(handCards,cardToAdd)){
+                    handCards.add(cardToAdd);
+                } else {
+                    throw new TwoIdenticalCardsException();
+                }
+
             }
             handsPoker.add(new HandPoker(handCards));
         }
         return handsPoker;
+    }
+
+    private static boolean checkIfCardAlreadyExist(ArrayList<Card> handCards, Card cardToTest){
+        return handCards.contains(cardToTest);
     }
 }
