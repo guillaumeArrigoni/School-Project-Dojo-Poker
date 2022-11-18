@@ -400,7 +400,7 @@ public class Comparison {
      * @return (true, false or empty) if the first straight flush is (higher, lower or equals) to the second one
      */
     private Optional<Boolean> chooseWinningStraightFlush(){
-        Optional<Boolean> result4 = chooseWinningStraightFlush();
+        Optional<Boolean> result4 = chooseWinningSingle();
         this.winningCombination = Combination.STRAIGHT_FLUSH;
         return result4;
     }
