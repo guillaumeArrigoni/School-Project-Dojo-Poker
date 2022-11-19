@@ -28,22 +28,18 @@ public class GamePoker {
 
     public static List<HandPoker> registerHandsPoker(int numberOfPlayer) throws PokerException {
         List<HandPoker> handsPoker = new ArrayList<>(numberOfPlayer);
+        ArrayList<Card> allCard = new ArrayList<>();
 
         for (int playerNumber = 1; playerNumber <= numberOfPlayer; playerNumber++) {
-
             boolean existError = true;
             ArrayList<Card> handCards = new ArrayList<>(HandPoker.NBR_CARDS);
             int nbCardRemaining = HandPoker.NBR_CARDS;
             String errorMessage = "";
-            ArrayList<Card> allCard = new ArrayList<>();
-
-
             while (existError) {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("The card of player " + playerNumber + " : ");
                 System.out.println("Please enter " + nbCardRemaining + " card(s).");
                 String[] cardString = scanner.nextLine().split(" ");
-
                 try {
                     if (cardString.length != nbCardRemaining) {
                         throw new WrongNumberOfCardsException();
@@ -80,6 +76,12 @@ public class GamePoker {
         return handsPoker;
     }
 
+    /**
+     * throw an error if the list already contain a card
+     * @param cardList, a list where the code will check if a card already exist
+     * @param cardToTest, the card that is checked if the list already contain it
+     * @throws TwoIdenticalCardsException
+     */
     private static void checkIfCardAlreadyExist(List<Card> cardList, Card cardToTest) throws TwoIdenticalCardsException{
         if (cardList.contains(cardToTest)) {
             throw new TwoIdenticalCardsException();
