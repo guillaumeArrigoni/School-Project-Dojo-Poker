@@ -15,21 +15,21 @@ class ValueTest {
 
     private static Stream<Arguments> provideValueStringConstructor() throws PokerException {
         return Stream.of(
-                Arguments.of(new Value("8"), "8", 8, Value.HUIT),
-                Arguments.of(new Value("3"), "3", 3, Value.TROIS),
-                Arguments.of(new Value("A"), "A", 14, Value.AS),
-                Arguments.of(new Value("R"), "R", 13, Value.ROI),
-                Arguments.of(new Value("2"), "2", 2, Value.DEUX)
+                Arguments.of(new Value("8"), "8", 8, Value.HUIT, "8"),
+                Arguments.of(new Value("3"), "3", 3, Value.TROIS, "3"),
+                Arguments.of(new Value("A"), "A", 14, Value.AS, "As"),
+                Arguments.of(new Value("R"), "R", 13, Value.ROI, "Roi"),
+                Arguments.of(new Value("2"), "2", 2, Value.DEUX, "2")
         );
     }
 
     private static Stream<Arguments> provideValueIntConstructor() throws PokerException {
         return Stream.of(
-                Arguments.of(new Value(8), "8", 8, Value.HUIT),
-                Arguments.of(new Value(3), "3", 3, Value.TROIS),
-                Arguments.of(new Value(14), "A", 14, Value.AS),
-                Arguments.of(new Value(13), "R", 13, Value.ROI),
-                Arguments.of(new Value(2), "2", 2, Value.DEUX)
+                Arguments.of(new Value(8), "8", 8, Value.HUIT, "8"),
+                Arguments.of(new Value(3), "3", 3, Value.TROIS, "3"),
+                Arguments.of(new Value(14), "A", 14, Value.AS, "As"),
+                Arguments.of(new Value(13), "R", 13, Value.ROI, "Roi"),
+                Arguments.of(new Value(2), "2", 2, Value.DEUX, "2")
         );
     }
 
@@ -48,8 +48,8 @@ class ValueTest {
 
     @ParameterizedTest
     @MethodSource({"provideValueStringConstructor", "provideValueIntConstructor"})
-    void toStringMethodTestParameterized(Value theValue, String theName) {
-        assertEquals(theName, theValue.toString());
+    void toStringMethodTestParameterized(Value theValue, String theName, int thePosition, Value correspondingValue, String theString) {
+        assertEquals(theString, theValue.toString());
     }
 
     @ParameterizedTest

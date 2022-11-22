@@ -1,8 +1,16 @@
 package gamepoker;
 
-import gamepoker.exception.*;
+import gamepoker.exception.PokerException;
+import gamepoker.exception.TwoIdenticalCardsException;
+import gamepoker.exception.WrongNumberOfCardsException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class GamePoker {
 
@@ -10,81 +18,61 @@ public class GamePoker {
     public static final int PLAYER1 = 0;
     public static final int PLAYER2 = 1;
 
-    public static void main(String[] args) throws PokerException {
+    public static void main(String[] args) throws InterruptedException {
 
-        List<HandPoker> theHandsPoker = registerHandsPoker(NUMBER_OF_PLAYER);
-        Comparison comparison = new Comparison(theHandsPoker.get(PLAYER1), theHandsPoker.get(PLAYER2));
+        List<HandPoker> theHandsPoker = registerHandsPoker();
 
-        if (comparison.getWinning().isEmpty()) {
-            System.out.println("Both player have same hand ! No one win");
-        } else {
-            if (comparison.getWinning().get()) {
-                System.out.println("Player 1 win with " + comparison);
-            } else {
-                System.out.println("Player 2 win with " + comparison);
-            }
-        }
+        Comparison comparisonTwoHands = new Comparison(theHandsPoker.get(PLAYER1), theHandsPoker.get(PLAYER2));
+
+        System.out.println("\n" + comparisonTwoHands);
     }
 
-    public static List<HandPoker> registerHandsPoker(int numberOfPlayer) throws PokerException {
-        List<HandPoker> handsPoker = new ArrayList<>(numberOfPlayer);
-        ArrayList<Card> allCard = new ArrayList<>();
+    public static List<HandPoker> registerHandsPoker() throws InterruptedException {
+        List<HandPoker> allHandsPoker = new ArrayList<>(NUMBER_OF_PLAYER);
 
-        for (int playerNumber = 1; playerNumber <= numberOfPlayer; playerNumber++) {
+        for (int playerNumber = 1; playerNumber <= NUMBER_OF_PLAYER; playerNumber++) {
             boolean existError = true;
-            ArrayList<Card> handCards = new ArrayList<>(HandPoker.NBR_CARDS);
-            int nbCardRemaining = HandPoker.NBR_CARDS;
-            String errorMessage = "";
+
             while (existError) {
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("The card of player " + playerNumber + " : ");
-                System.out.println("Please enter " + nbCardRemaining + " card(s).");
-                String[] cardString = scanner.nextLine().split(" ");
                 try {
-                    if (cardString.length != nbCardRemaining) {
-                        throw new WrongNumberOfCardsException();
-                    }
-                    for (int cardNumber = 0; cardNumber < nbCardRemaining; cardNumber++) {
-                        Card cardToAdd = new Card(cardString[cardNumber]);
-                        checkIfCardAlreadyExist(allCard, cardToAdd);
-                        handCards.add(cardToAdd);
-                        allCard.add(cardToAdd);
-                    }
-                    handsPoker.add(new HandPoker(handCards));
+                    HandPoker handPokerCurrentPlayer = registerCards(playerNumber);
+                    allHandsPoker.add(handPokerCurrentPlayer);
+                    checkIfaCardAlreadyExist(allHandsPoker);
                     existError = false;
-                } catch (WrongNumberOfCardsException e) {
-                    errorMessage = "You didn't have enter the number of card requested.";
-                } catch (IncorrectColorException e) {
-                    errorMessage = "The card " + cardString[handCards.size()] + " don't have a valid color.";
-                } catch (IncorrectValueException e) {
-                    errorMessage = "The card " + cardString[handCards.size()] + " don't have a valid value.";
-                    e.printStackTrace();
-                } catch (IncorrectCardException e) {
-                    errorMessage = "The card " + cardString[handCards.size()] + " is not valid.";
-                } catch (TwoIdenticalCardsException e){
-                    errorMessage = "The card " + cardString[handCards.size()] + " already exist.";
-                } finally {
-                    if (existError){
-                        System.out.println("\nAn error has occurred");
-                        errorMessage = errorMessage + "\n";
-                        System.out.println(errorMessage);
-                    }
-                    nbCardRemaining = HandPoker.NBR_CARDS - handCards.size();
+                } catch (PokerException e) {
+                    System.err.println("\n  -> An error has occurred : " + e.getErrorTitle() + "\n");
+                    TimeUnit.SECONDS.sleep(1); // Wait 1s for retry
                 }
             }
         }
-        return handsPoker;
+        return allHandsPoker;
     }
 
-    /**
-     * throw an error if the list already contain a card
-     * @param cardList, a list where the code will check if a card already exist
-     * @param cardToTest, the card that is checked if the list already contain it
-     * @throws TwoIdenticalCardsException
-     */
-    private static void checkIfCardAlreadyExist(List<Card> cardList, Card cardToTest) throws TwoIdenticalCardsException{
-        if (cardList.contains(cardToTest)) {
-            throw new TwoIdenticalCardsException();
+    public static HandPoker registerCards(int playerNumber) throws PokerException {
+        Scanner scannerCards = new Scanner(System.in);
+        System.out.print("The cards of player " + playerNumber + " : ");
+        String[] allCardsString = scannerCards.nextLine().split(" ");
+
+        if (allCardsString.length != HandPoker.NBR_CARDS) {
+            throw new WrongNumberOfCardsException();
+        }
+
+        ArrayList<Card> handCards = new ArrayList<>(HandPoker.NBR_CARDS);
+        for (String cardString : allCardsString) {
+            handCards.add(new Card(cardString));
+        }
+        return new HandPoker(handCards);
+    }
+
+    private static void checkIfaCardAlreadyExist(List<HandPoker> handsPokerList) throws PokerException {
+        ArrayList<Card> allCardsInAllHands = new ArrayList<>();
+
+        handsPokerList.forEach(handPoker -> allCardsInAllHands.addAll(handPoker.getHandCards())); //Get all cards in all hands
+
+        Map<Card, Long> cardsOccurrence = allCardsInAllHands.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting())); // Group by card and count how many appear (like SQL)
+        for (Map.Entry<Card, Long> cardAndCount : cardsOccurrence.entrySet()) {
+            if (cardAndCount.getValue() >= 2)
+                throw new TwoIdenticalCardsException(cardAndCount.getKey().toString());
         }
     }
 }

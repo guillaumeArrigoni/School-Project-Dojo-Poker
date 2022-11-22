@@ -4,6 +4,7 @@ import gamepoker.exception.IncorrectColorException;
 import gamepoker.exception.PokerException;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Color {
     private String name;
@@ -26,13 +27,18 @@ public class Color {
 
     public Color(String name) throws PokerException {
         if (!validColorName(name)) {
-            throw new IncorrectColorException();
+            throw new IncorrectColorException(name);
         }
         this.name = name;
     }
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
     @Override
@@ -64,6 +70,12 @@ public class Color {
 
     @Override
     public String toString() {
-        return this.name;
+        switch (this.name) {
+            case "Tr" : return "trèfle";
+            case "Ca" : return "carreau";
+            case "Co" : return "coeur";
+            case "Pi" : return "pique";
+            default: return this.name;
+        }
     }
 }

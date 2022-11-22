@@ -1,16 +1,16 @@
 package gamepoker;
 
 public enum Combination {
-    EQUALITY(0, "a equality"),
+    EQUALITY(0, "a equality of "),
     HIGHCARD(1, "the highest card : "),
-    PAIR(2, "a double pair"),
-    TWO_PAIR(3, "a double pair"),
-    BRELAN(4, "a three of a kind"),
-    SUITE(5, "a straight"),
-    FLUSH(6, "a flush"),
-    FULL(7, "a full"),
-    CARRE(8, "a four of a kind"),
-    STRAIGHT_FLUSH(9, "a straight flush");
+    PAIR(2, "a double pair of "),
+    TWO_PAIR(3, "a double pair of "),
+    BRELAN(4, "a three of a kind of "),
+    SUITE(5, "a straight of "),
+    FLUSH(6, "a flush of "),
+    FULL(7, "a full of "),
+    CARRE(8, "a four of a kind of "),
+    STRAIGHT_FLUSH(9, "a straight flush of ");
 
     private final int rank;
 

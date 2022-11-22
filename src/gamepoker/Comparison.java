@@ -36,28 +36,26 @@ public class Comparison {
 
     @Override
     public String toString() {
-        String combinationString = winningCombination.toString();
-        if (winningCombination != Combination.HIGHCARD) {
-            combinationString += " of ";
+        StringBuilder outString = new StringBuilder();
+        if (this.firstWinningOnSecond.isPresent()) {
+            if (this.firstWinningOnSecond.get())
+                outString.append("The player 1 win with ");
+            else
+                outString.append("The player 2 win with ");
+        } else {
+            outString.append("Equality of both hands ! No one win");
+            return outString.toString();
         }
-        Value value = null;
+        outString.append(winningCombination.toString());
         try {
-            value = new Value(winningValue.get(0));
+            for (int valueMorePosition : this.winningValue) {
+                Value valueMore = new Value(valueMorePosition);
+                outString.append(valueMore + ", ");
+            }
         } catch (PokerException e) {
             throw new RuntimeException(e);
         }
-        combinationString = combinationString + value.toString();
-        for (int i = 1; i<winningValue.size();i++){ /* dans le cas d'une doube pair ou d'une couleur par exemple*/
-            combinationString = combinationString + ", ";
-            Value valueMore = null;
-            try {
-                valueMore = new Value(winningValue.get(i));
-            } catch (PokerException e) {
-                throw new RuntimeException(e);
-            }
-            combinationString = combinationString + valueMore.toString();
-        }
-        return combinationString;
+        return outString.substring(0, outString.length() - 2);
     }
 
     public Optional<Boolean> getWinning() {
@@ -100,22 +98,22 @@ public class Comparison {
         return false;
     }
 
-    private boolean haveFull(HandPoker hand){
-        return(haveBrelan(hand) && havePair(hand));
+    private boolean haveFull(HandPoker hand) {
+        return (haveBrelan(hand) && havePair(hand));
     }
 
-    private  boolean haveFlush(HandPoker hand) {
+    private boolean haveFlush(HandPoker hand) {
         boolean bool = true;
         Color colorCard1 = hand.getHandCards().get(0).getColor();
-        int i =1;
-        while(bool && i < 5){
+        int i = 1;
+        while (bool && i < 5) {
             bool = hand.getHandCards().get(i).getColor().equals(colorCard1);
             i++;
         }
         return bool;
     }
 
-    private  boolean haveStraightFlush(HandPoker hand) {
+    private boolean haveStraightFlush(HandPoker hand) {
         return haveStraight(hand) && haveFlush(hand);
     }
 
@@ -148,7 +146,7 @@ public class Comparison {
             return Combination.STRAIGHT_FLUSH;
         } else if (haveCarre(hand)) {
             return Combination.CARRE;
-        } else if (haveFull(hand)){
+        } else if (haveFull(hand)) {
             return Combination.FULL;
         } else if (haveFlush(hand)) {
             return Combination.FLUSH;
@@ -175,7 +173,7 @@ public class Comparison {
      * @return (true, false or empty) if the first hand is (better, worst or equals) to the second hand
      */
     private Optional<Boolean> chooseWinningHand() {
-        if (chooseCombination(this.handP1) != chooseCombination(this.handP2)){
+        if (chooseCombination(this.handP1) != chooseCombination(this.handP2)) {
             return chooseWinningCombination();
         }
 
@@ -222,10 +220,10 @@ public class Comparison {
             case CARRE:
                 listValue.add(getCarre(hand)); /* car getCarre ne renvoie pas une liste */
                 return listValue;
-            case FLUSH: case SUITE : case STRAIGHT_FLUSH :
+            case FLUSH, SUITE, STRAIGHT_FLUSH:
                 listValue.add(getSingle(hand).get(0));
                 return listValue;
-            case BRELAN: case FULL : /* car la valeur du full correspond à celle du brelan */
+            case BRELAN, FULL: /* car la valeur du full correspond à celle du brelan */
                 listValue.add(getBrelan(hand)); /* car getBrelan ne renvoie pas une liste */
                 return listValue;
             default:
@@ -330,6 +328,7 @@ public class Comparison {
             }
         }
         this.winningCombination = Combination.EQUALITY;
+        this.winningValue = new ArrayList<>();
         return Optional.empty();
     }
 
@@ -359,7 +358,7 @@ public class Comparison {
      *
      * @return (true, false or empty) if the first full is (higher, lower or equals) to the second one
      */
-    private Optional<Boolean> chooseWinningFull(){
+    private Optional<Boolean> chooseWinningFull() {
         Optional<Boolean> result2 = chooseWinningBrelan();
         this.winningCombination = Combination.FULL;
         return result2;
@@ -399,7 +398,7 @@ public class Comparison {
      *
      * @return (true, false or empty) if the first straight flush is (higher, lower or equals) to the second one
      */
-    private Optional<Boolean> chooseWinningStraightFlush(){
+    private Optional<Boolean> chooseWinningStraightFlush() {
         Optional<Boolean> result4 = chooseWinningSingle();
         this.winningCombination = Combination.STRAIGHT_FLUSH;
         return result4;

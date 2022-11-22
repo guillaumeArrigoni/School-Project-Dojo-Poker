@@ -63,7 +63,7 @@ public class Value implements Comparable<Value> {
      */
     public Value(String name) throws PokerException {
         if (!validValueName(name)) {
-            throw new IncorrectValueException();
+            throw new IncorrectValueException(name);
         }
         this.name = name;
     }
@@ -99,7 +99,7 @@ public class Value implements Comparable<Value> {
             if (allValues.get(position).getName().equals(this.name))
                 return position;
         }
-        return -1; //TODO: Create an exception here
+        return 0;
     }
 
     /**
@@ -142,7 +142,18 @@ public class Value implements Comparable<Value> {
      */
     @Override
     public String toString() {
-        return this.name;
+        switch (this.name) {
+            case "A":
+                return "As";
+            case "R":
+                return "Roi";
+            case "D":
+                return "Dame";
+            case "V":
+                return "Valet";
+            default:
+                return this.name;
+        }
     }
 
     /**

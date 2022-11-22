@@ -37,8 +37,8 @@ class CardTest {
 
     @Test
     void toStringTest() {
-        assertEquals("10", cardTenTr.toString());
-        assertEquals("A", cardAsPi.toString());
+        assertEquals("10 de trèfle", cardTenTr.toString());
+        assertEquals("As de pique", cardAsPi.toString());
     }
 
     @Test
