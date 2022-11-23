@@ -2,25 +2,29 @@
 <h3 align="center">PS5 - Projet de développement S5</h3>
 
 ## Sommaire
-1. [État du projet](#1-tat-du-projet)
-2. [Comment exécuter le programme](#2-comment-excuter-le-programme)
-3. [Comment exécuter les tests](#3-comment-excuter-les-tests)
+1. [État du projet](#1-état-du-projet)
+2. [Comment exécuter le programme](#2-comment-exécuter-le-programme)
+3. [Comment exécuter les tests](#3-comment-exécuter-les-tests)
 4. [Comment jouer](#4-comment-jouer)
-5. [Description des règles](#5-description-des-rgles)
+5. [Description des règles](#5-description-des-règles)
 
 ## 1. État du projet
-...
+Projet terminé, toutes les slices ont étaient développées. Le code lui reste tout de même perfectible. 
 
 ## 2. Comment exécuter le programme
-...
+Pour exécuter le programme, il faut run la classe **[src/gamepoker/GamePoker.java](https://github.com/pns-si3-projects/dojo-poker-22-23-ps5-22-23-poker-d/blob/56255b6f76f855778ab115616c95ac78fd914760/src/gamepoker/GamePoker.java).**
+
+<img src="https://i.ibb.co/Fq33BZF/image.png" alt="exécuter le programme" width="350"/>
 
 ## 3. Comment exécuter les tests
-...
-![This is an image](https://previews.dropbox.com/p/thumb/ABtAQsSi-j6E_Gkpv1iAW_RLuNk-_LeP29reKNWPJILc1BChAbBPvmainecihQKaukq_d_hOtm0ISzzobpQrdRAxQ3YJY02yP73_SRLo0hiQehndaOP5Ez4ElO8g5tTp1IW-cg__tE9r7E-Y1MgqjhSr5u2kNSoehZQo8dUjk8tYlVCtgkFCsJPEIUetoEN2Ze1MH7YVZGzBQROO7us0Nct8iniApt6AL6Rv0j-P7U4TFaHKX8rWVWOuLI4HIagWCjKMWIW67yeYSEx9z0eP73fvL6hZRDu5HVgJRgeWXmlPJCf8rqWwztZcNYS0WwVmjoMbF21UXcrdUAFvfBPjhb3e_WBCcwXn8MAwdm1Pnrm5pXYMvgIYdE5iY3YRq0uksuU/p.jpeg)
-## 4. Comment jouer
-Une fois le [programme exécuter](#2-comment-excuter-le-programme) on peut jouer via la console.
+Pour exécuter les programmes, il faut run les classes de test situé dans **[Test/gamepoker/*.java](https://github.com/pns-si3-projects/dojo-poker-22-23-ps5-22-23-poker-d/tree/56255b6f76f855778ab115616c95ac78fd914760/Test/gamepoker)**
 
-Il suffit de rentrer les cartes manuellement avec le clavier séparées par des espaces comme ceci 
+<img src="https://i.ibb.co/hH8tTbx/test.jpg" alt="exécuter les tests" width="350"/>
+
+## 4. Comment jouer
+Une fois le [programme exécuté](#2-comment-exécuter-le-programme) on peut jouer via la console.
+
+Il suffit de rentrer les cartes manuellement avec le clavier séparées par des espaces comme ceci :
 ```
 The cards of player 1 : 2Tr 6Ca 7Ca 8Tr APi
 The cards of player 2 : 3Tr 5Ca 5Co DCo RCo
