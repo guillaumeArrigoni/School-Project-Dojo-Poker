@@ -372,7 +372,9 @@ public class Comparison {
      */
     private Optional<Boolean> chooseWinningFlush() {
         Optional<Boolean> result3 = chooseWinningSingle();
-        this.winningCombination = Combination.FLUSH;
+        if (result3.isPresent()){
+            this.winningCombination = Combination.FLUSH;
+        }
         return result3;
     }
 
@@ -385,11 +387,10 @@ public class Comparison {
     private Optional<Boolean> chooseWinningSuite() {
         if (chooseWinningSingle().isEmpty()) {
             return Optional.empty(); /*égalité*/
-        } else {
-            Optional<Boolean> result = chooseWinningSingle();
-            this.winningCombination = Combination.SUITE; /*modifier après l'appel de chooseWinningSingle pour mettre Suite comme combinaison gagnante et non pas "carte la plus haute"*/
-            return result;
         }
+        Optional<Boolean> result = chooseWinningSingle();
+        this.winningCombination = Combination.SUITE; /*modifier après l'appel de chooseWinningSingle pour mettre Suite comme combinaison gagnante et non pas "carte la plus haute"*/
+        return result;
     }
 
     /**
@@ -400,7 +401,9 @@ public class Comparison {
      */
     private Optional<Boolean> chooseWinningStraightFlush() {
         Optional<Boolean> result4 = chooseWinningSingle();
-        this.winningCombination = Combination.STRAIGHT_FLUSH;
+        if (result4.isPresent()){
+            this.winningCombination = Combination.STRAIGHT_FLUSH;
+        }
         return result4;
     }
 }
