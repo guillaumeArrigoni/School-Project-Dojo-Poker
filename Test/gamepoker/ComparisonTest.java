@@ -29,11 +29,14 @@ class ComparisonTest {
     private static Card septCo;
     private static Card huitCo;
     private static Card neufTr;
+    private static Card dixTr;
     private static Card neufCo;
     private static Card deuxPi;
     private static Card quatrePi;
     private static  Card huitCa;
     private static Card cinqCa;
+    private static Card dameCa;
+    private static Card dameCo;
     private static Card septCa;
     private static Card roiCo;
     private static Card roiCa;
@@ -49,6 +52,9 @@ class ComparisonTest {
     private static HandPoker flushCo;
     private static HandPoker flushCa;
     private static HandPoker straightNeuf;
+    private static HandPoker straightRoi2;
+    private static HandPoker straightFlushTr;
+    private static HandPoker doublePairDameValet2;
     private static HandPoker carreRoi;
     private static HandPoker carreValet;
     private static HandPoker fullRoiNeuf;
@@ -84,6 +90,9 @@ class ComparisonTest {
     private static Comparison comparisonSamePair;
     private static Comparison comparisonSameHigherCard;
     private static Comparison comparisonSameFlush;
+    private static Comparison comparisonSameStraight;
+    private static Comparison comparisonSameDoublePair;
+    private static Comparison comparisonSameStraightFlush;
 
     @BeforeAll
     @Order(1)
@@ -113,6 +122,9 @@ class ComparisonTest {
         valetTr = new Card("VTr");
         roiTr = new Card("RTr");
         dameTr = new Card("DTr");
+        dixTr = new Card("10Tr");
+        dameCa = new Card("DCa");
+        dameCo = new Card("DCo");
     }
 
     @BeforeAll
@@ -133,6 +145,7 @@ class ComparisonTest {
         brelanValet = new HandPoker(new ArrayList<>(Arrays.asList(dameTr, valetTr, valetCa, valetCo, sixCo)));
         doublePaireRoiNeuf = new HandPoker(new ArrayList<>(Arrays.asList(roiCa, roiTr, neufPi, neufCo, deuxPi)));
         doublePairDameValet = new HandPoker(new ArrayList<>(Arrays.asList(dameTr, damePi, valetCo, valetTr, septCo)));
+        doublePairDameValet2 = new HandPoker(new ArrayList<>(Arrays.asList(dameCa, dameCo, valetCa, valetPi, septCa)));
         pairRoi = new HandPoker(new ArrayList<>(Arrays.asList(roiTr, roiCa, dixPi, neufCo, cinqCo)));
         pairValet = new HandPoker(new ArrayList<>(Arrays.asList(valetTr, valetCa, dameTr, septCo, sixCo)));
         pairValet2 = new HandPoker(new ArrayList<>(Arrays.asList(valetPi, valetCo, damePi, septCa, sixTr)));
@@ -140,6 +153,8 @@ class ComparisonTest {
         higherCardRoi = new HandPoker(new ArrayList<>(Arrays.asList(septCo, huitCo, neufPi, dameTr, roiPi)));
         higherCardDame = new HandPoker(new ArrayList<>(Arrays.asList(damePi, cinqCo, dixPi, neufCo, valetCa)));
         higherCardRoi2 = new HandPoker(new ArrayList<>(Arrays.asList(roiTr, damePi, neufTr, huitCa, septCa )));
+        straightFlushTr = new HandPoker(new ArrayList<>(Arrays.asList(roiTr,dameTr, valetTr, dixTr, neufTr)));
+        straightRoi2 = new HandPoker(new ArrayList<>(Arrays.asList(neufCo, dixTr, valetTr, dameTr, roiPi)));
     }
 
     @BeforeAll
@@ -165,46 +180,59 @@ class ComparisonTest {
         comparisonSameHigherCard = new Comparison(higherCardRoi, higherCardRoi2);
         comparisonSamePair = new Comparison(pairValet, pairValet2);
         comparisonSameFlush = new Comparison(flushCa, flushCo);
+        comparisonSameDoublePair = new Comparison(doublePairDameValet, doublePairDameValet2);
+        comparisonSameStraightFlush = new Comparison(straightFlushPi, straightFlushTr);
+        comparisonSameStraight = new Comparison(straightRoi, straightRoi2);
+
     }
 
     private static Stream<Arguments> provideComparison(){
         return Stream.of(
-                Arguments.of(comparisonBrelanE),
-                Arguments.of(comparisonCarreE),
-                Arguments.of(comparisonFullE),
-                Arguments.of(comparisonFlushE),
-                Arguments.of(comparisonDoublePairE),
-                Arguments.of(comparisonPairE),
-                Arguments.of(comparisonHigherCardE),
-                Arguments.of(comparisonStraightE),
-                Arguments.of(comparisonStraightFlushE),
-                Arguments.of(comparisonStraightFlushW),
-                Arguments.of(comparisonCarreW),
-                Arguments.of(comparisonFullW),
-                Arguments.of(comparisonFlushW),
-                Arguments.of(comparisonStraightW),
-                Arguments.of(comparisonBrelanW),
-                Arguments.of(comparisonDoublePairW),
-                Arguments.of(comparisonPairW)
+                Arguments.of(comparisonBrelanE, Combination.BRELAN),
+                Arguments.of(comparisonCarreE, Combination.CARRE),
+                Arguments.of(comparisonFullE, Combination.FULL),
+                Arguments.of(comparisonFlushE, Combination.FLUSH),
+                Arguments.of(comparisonDoublePairE, Combination.TWO_PAIR),
+                Arguments.of(comparisonPairE, Combination.PAIR),
+                Arguments.of(comparisonHigherCardE, Combination.HIGHCARD),
+                Arguments.of(comparisonStraightE, Combination.SUITE),
+                Arguments.of(comparisonStraightFlushE, Combination.STRAIGHT_FLUSH),
+                Arguments.of(comparisonStraightFlushW, Combination.STRAIGHT_FLUSH),
+                Arguments.of(comparisonCarreW, Combination.CARRE),
+                Arguments.of(comparisonFullW, Combination.FULL),
+                Arguments.of(comparisonFlushW, Combination.FLUSH),
+                Arguments.of(comparisonStraightW, Combination.SUITE),
+                Arguments.of(comparisonBrelanW, Combination.BRELAN),
+                Arguments.of(comparisonDoublePairW, Combination.TWO_PAIR),
+                Arguments.of(comparisonPairW, Combination.PAIR)
                 );
     }
     private static Stream<Arguments> provideComparisonEquals(){
         return Stream.of(
-                Arguments.of(comparisonSameFlush),
-                Arguments.of(comparisonSamePair),
-                Arguments.of(comparisonSameHigherCard)
+                Arguments.of(comparisonSameFlush, Combination.EQUALITY),
+                Arguments.of(comparisonSameDoublePair, Combination.EQUALITY),
+                Arguments.of(comparisonSamePair, Combination.EQUALITY),
+                Arguments.of(comparisonSameHigherCard, Combination.EQUALITY),
+                Arguments.of(comparisonSameStraightFlush, Combination.EQUALITY),
+                Arguments.of(comparisonSameStraight, Combination.EQUALITY)
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideComparison")
-    void getWinning(Comparison comparison) {
+    void testIfTheComparisonWinningValueIsTrue(Comparison comparison) {
         assertTrue(comparison.getWinning().get());
     }
 
     @ParameterizedTest
-    @MethodSource("provideComparisonEquals")
-    void getWinningEquals(Comparison comparison) {
+    @MethodSource({"provideComparisonEquals"})
+    void testIfWinningValueIsEmptyWhenEquality(Comparison comparison) {
         assertTrue(comparison.getWinning().isEmpty());
+    }
+
+    @ParameterizedTest
+    @MethodSource({"provideComparison", "provideComparisonEquals"})
+    void testIfWinningCombinationCorrespondsToTheWinnerCombination(Comparison comparison, Combination combinationWinner) {
+        assertEquals(combinationWinner, comparison.getWinningCombination());
     }
 }
