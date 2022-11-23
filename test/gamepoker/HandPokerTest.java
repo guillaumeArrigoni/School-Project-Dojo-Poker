@@ -58,7 +58,7 @@ class HandPokerTest {
     @Test
     void checkDifferentHandCombination() {
         assertEquals(8, paireDeHuit.getHandCombination().get(Comparison.PAIR_FOR_DICO_KEY).get(0));
-        List huitEtCinqList = new ArrayList<>(Arrays.asList(5, 8)); //List need to be sorted
+        List<Integer> huitEtCinqList = new ArrayList<>(Arrays.asList(5, 8)); //List need to be sorted
         assertEquals(huitEtCinqList, deuxPairesDeHuitEtDeCinq.getHandCombination().get(Comparison.PAIR_FOR_DICO_KEY));
         assertEquals(5, brelanCinq.getHandCombination().get(Comparison.BRELAN_FOR_DICO_KEY).get(0));
         assertEquals(8, carreDeHuit.getHandCombination().get(Comparison.CARRE_FOR_DICO_KEY).get(0));
