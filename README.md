@@ -1,6 +1,16 @@
 <h2 align="center">Dojo - La main de Poker</h2>
 <h3 align="center">PS5 - Projet de développement S5</h3>
 
+- **Notre équipe GLYK est composé de :**
+
+  - Guillaume ARRIGONI
+
+  - Loris DRID
+
+  - Yacine MERIOUA
+
+  - Karim CHARLEUX
+
 ## Sommaire
 1. [État du projet](#1-état-du-projet)
 2. [Comment exécuter le programme](#2-comment-exécuter-le-programme)
